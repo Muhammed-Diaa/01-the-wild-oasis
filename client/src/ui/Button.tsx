@@ -48,10 +48,11 @@ const variations = {
   `,
 };
 const Button = styled.button<ButtonFace>`
-  ${({ size }) => sizes[size || "medium"]};
-  ${({ variation }) => variations[variation || "primary"]}
+  ${(props) => sizes[props.$size || "medium"]};
+  ${(props) => variations[props.$variation || "primary"]}
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
+  width: 100%;
   cursor: pointer;
 `;
 export default Button;

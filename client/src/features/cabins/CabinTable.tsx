@@ -1,15 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import { getCabins } from "../../services/apiCabins";
-import { CabinResponse } from "../../types/ResponseTypes";
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
+import { ApiResponse } from "../../utils/ApiResponse";
+import { CabinResponse } from "../../types/ResponseTypes";
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
   font-size: 1.4rem;
   background-color: var(--color-grey-0);
   border-radius: 7px;
-  overflow: hidden;
 `;
 
 const TableHeader = styled.header`
@@ -31,33 +30,30 @@ const CabinTable = () => {
     data: cabins,
     isPending,
     error,
-  } = useQuery<CabinResponse[]>({
-    queryKey: ["cabins"],
+  } = ApiResponse({
+    DataName: "cabins",
     queryFn: getCabins,
   });
-  console.log(isPending);
+
   if (isPending) return <Spinner />;
   if (error) return <div>Error: {error.message}</div>;
+  if (!cabins || !Array.isArray(cabins)) return null;
 
   return (
-    <>
-      <Table>
-        <TableHeader>
-          <div></div>
-          <div>Cabins</div>
-          <div>Capcity</div>
-          <div>Price</div>
-          <div>discount</div>
-          <div></div>
-        </TableHeader>{" "}
-        {/* {cabins.map((cabin) => (
-          <CabinRow key={cabin.id} cabin={cabin} />
-        ))} */}
-        {[...Array(10)].map((_, cabin) => (
-          <CabinRow key={cabin} Data={cabins[0]} />
-        ))}
-      </Table>
-    </>
+    <Table>
+      <TableHeader>
+        <div></div>
+        <div>Cabins</div>
+        <div>Capacity</div>
+        <div>Price</div>
+        <div>Discount</div>
+        <div></div>
+      </TableHeader>
+      {cabins.map((cabin: CabinResponse) => (
+        <CabinRow key={cabin.id} Data={cabin} />
+      ))}
+    </Table>
   );
 };
 export default CabinTable;
+// { name?: string } |

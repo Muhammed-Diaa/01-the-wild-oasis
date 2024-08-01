@@ -1,44 +1,16 @@
-import {
-  HiOutlineCalendarDays,
-  HiOutlineCog6Tooth,
-  HiOutlineHome,
-  HiOutlineHomeModern,
-  HiOutlineUsers,
-} from "react-icons/hi2";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
-const list = [
-  {
-    name: "dashboard",
-    path: "/Dashboard",
-    icon: <HiOutlineHome />,
-  },
-  {
-    name: "Bookings",
-    path: "/bookings",
-    icon: <HiOutlineCalendarDays />,
-  },
-  {
-    name: "Cabins",
-    path: "/cabins",
-    icon: <HiOutlineHomeModern />,
-  },
-  {
-    name: "user",
-    path: "/user",
-    icon: <HiOutlineUsers />,
-  },
-  {
-    name: "Settings",
-    path: "/settings",
-    icon: <HiOutlineCog6Tooth />,
-  },
-];
+import Button from "./Button";
+import { useState } from "react";
+// import CreateCabinForm from "../features/cabins/CreateCabinForm";
+import { NavBtnList } from "../utils/MapLists";
+import CreateAndEditCabin from "../features/cabins/CreateAndEditCabin";
 
 const NavList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  justify-content: space-between;
+  height: 100%;
 `;
 const Link = styled(NavLink)`
   &:link,
@@ -78,15 +50,35 @@ const Link = styled(NavLink)`
     color: var(--color-brand-600);
   }
 `;
+const Div = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+`;
+const BtnDiv = styled.div`
+  width: 100%;
+  padding-right: 3.2rem;
+`;
 export default function MainNav() {
+  const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+
   return (
     <NavList>
-      {list.map((item, i) => (
-        <Link key={i} to={item.path}>
-          {item.icon}
-          {item.name}
-        </Link>
-      ))}
+      <Div>
+        {NavBtnList.map((item, i) => (
+          <Link key={i} to={item.path}>
+            {<item.icon />}
+            {item.name}
+          </Link>
+        ))}
+      </Div>
+      {pathname.startsWith("/cabins") && (
+        <BtnDiv>
+          <Button onClick={() => setOpen(true)}>Add new cabin</Button>
+        </BtnDiv>
+      )}
+      {open && <CreateAndEditCabin setOpen={setOpen} />}
     </NavList>
   );
 }

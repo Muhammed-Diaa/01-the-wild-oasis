@@ -16,10 +16,11 @@ import AppLayout from "./ui/AppLayout";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { HelmetProvider } from "react-helmet-async";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000,
+      staleTime: 0,
     },
   },
 });
@@ -75,6 +76,20 @@ function App() {
       <HelmetProvider>
         <RouterProvider router={Router} />
       </HelmetProvider>
+      <Toaster
+        position="top-center"
+        gutter={12}
+        toastOptions={{
+          style: {
+            maxWidth: "500px",
+            background: "var(--color-grey-0)",
+            color: "var(--color-grey-700)",
+            padding: "1rem",
+            fontSize: "1.4rem",
+            borderRadius: "8px",
+          },
+        }}
+      />
     </QueryClientProvider>
   );
 }

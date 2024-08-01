@@ -9,6 +9,7 @@ const Options = styled.div`
 const Button = styled.button`
   border: none;
   background: inherit;
+
   &:focus {
     outline: none;
   }
@@ -18,12 +19,12 @@ const Menu = styled.ul`
   flex-direction: column;
   position: absolute;
   background-color: var(--color-grey-700);
-  z-index: 10;
   border-radius: 40px;
   width: 100px;
   height: auto;
   right: 13px;
-  top: 20px;
+  top: 26px;
+
   > *:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-400);
   }
@@ -66,7 +67,6 @@ const Toggle = ({ children }: Children) => {
       <Button>
         <OptionDots onClick={() => setOpenToggle((i) => !i)} />
       </Button>
-
       {openToggle && <Menu ref={toggleRef}>{children}</Menu>}
     </Options>
   );

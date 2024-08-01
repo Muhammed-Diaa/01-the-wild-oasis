@@ -1,8 +1,13 @@
 import styled from "styled-components";
-import { CabinResponse, Cabins } from "../../types/ResponseTypes";
+import { CabinResponse } from "../../types/ResponseTypes";
 import Toggle from "../../ui/ToggleDown";
 import { TiEdit } from "react-icons/ti";
 import { GoTrash } from "react-icons/go";
+import { formatCurrency } from "../../utils/helpers";
+import { deleteCabin } from "../../services/apiCabins";
+import { IUDApiResponse } from "../../utils/ApiResponse";
+import { useState } from "react";
+import CreateAndEditCabin from "./CreateAndEditCabin";
 
 const TableRow = styled.div`
   display: grid;
@@ -10,19 +15,17 @@ const TableRow = styled.div`
   column-gap: 2.4rem;
   align-items: center;
   padding: 1.4rem 2.4rem;
-
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
   }
 `;
 const Img = styled.img`
   display: block;
-  margin-left: 10px;
-  width: 6.4rem;
+  width: 8rem;
   aspect-ratio: 3 / 2;
-  object-fit: cover;
+  object-fit: fill;
   object-position: center;
-  transform: scale(1.5) translateX(-7px);
+  transform: scale(1.5) translateX(-2px);
 `;
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -46,6 +49,8 @@ const Button = styled.button`
   border: none;
   font-weight: 600;
   padding: 10px 16px;
+  z-index: 10;
+
   &:focus {
     outline: none;
   }
@@ -53,24 +58,47 @@ const Button = styled.button`
     background-color: var(--color-grey-200);
   }
 `;
-const CabinRow = ({ Data }: Cabins) => {
-  const { image, name, maxCapcity, regularPrine, discount }: CabinResponse =
-    Data;
+
+const CabinRow = ({ Data }: { Data: CabinResponse }) => {
+  const [open, setOpen] = useState(false);
+  const {
+    id,
+    image,
+    name,
+    maxCapacity,
+    regularPrice,
+    discount,
+  }: CabinResponse = Data;
+  const { mutate: Deleting } = IUDApiResponse({
+    queryKey: "cabins",
+    FN: deleteCabin,
+    loading: "Deleting cabin...",
+    success: "Cabin deleted successfully!",
+    error: "Can't delete cabin!",
+  });
   return (
     <TableRow>
-      <Img src={image} alt={name} />
+      <Img src={typeof image === "string" ? image : ""} alt={name} />
       <Cabin>{name}</Cabin>
-      <Cabin>{maxCapcity}</Cabin>
-      <Price>{regularPrine}</Price>
-      <Discount>{discount}</Discount>
+      <div>Fits up to {maxCapacity} guests</div>
+      <Price>{formatCurrency(regularPrice)}</Price>
+      <Discount>{formatCurrency(discount)}</Discount>
       <Toggle>
-        <Button>
+        <Button onClick={() => setOpen(true)}>
           <span>edit</span> <TiEdit />
         </Button>
-        <Button>
+        <Button onClick={id ? () => Deleting(id) : () => {}}>
           <span>remove</span> <GoTrash />
         </Button>
       </Toggle>
+      {open && (
+        <CreateAndEditCabin
+          editCabins={Data}
+          setOpen={(value) => {
+            setOpen(value);
+          }}
+        />
+      )}
     </TableRow>
   );
 };

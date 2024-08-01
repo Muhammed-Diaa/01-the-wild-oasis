@@ -8,13 +8,18 @@ const Main = styled.main`
 `;
 const Div = styled.div`
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: 70px 1fr;
   width: 100%;
 `;
 const Outlay = styled.div`
-  background-color: var(--color-grey-100);
   padding: 4rem 4.8rem 6.4rem;
-  border-top-left-radius: 4rem;
+  border-top-left-radius: 2rem;
+  background-color: var(--color-grey-100);
+  text-align: -webkit-center;
+`;
+
+const MaxWidth = styled.div`
+  max-width: 120rem;
 `;
 function AppLayout() {
   return (
@@ -23,7 +28,9 @@ function AppLayout() {
       <Div>
         <Header />
         <Outlay>
-          <Outlet />
+          <MaxWidth>
+            <Outlet />
+          </MaxWidth>
         </Outlay>
       </Div>
     </Main>
