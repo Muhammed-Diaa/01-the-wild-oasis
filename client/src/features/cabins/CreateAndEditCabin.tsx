@@ -7,14 +7,13 @@ import InputsFiled from "../../ui/Inputs";
 import Textarea from "../../ui/Textarea";
 import Button from "../../ui/Button";
 
-import { CabinResponse, ICFN } from "../../types/ResponseTypes";
+import { CabinResponse, ICFN, MutationResult } from "../../types/ResponseTypes";
 import { insertAndEditCabin } from "../../services/apiCabins";
-import { IUDApiResponse } from "../../utils/ApiResponse";
+import { IUDApiResponse } from "../../utils/ApiResponses";
 
 function CreateAndEditCabin({ setOpen, editCabins }: ICFN) {
   const { id: editID, ...editValues } = editCabins || {};
   const isEditSession = Boolean(editID);
-
   const {
     register,
     handleSubmit,
@@ -23,61 +22,38 @@ function CreateAndEditCabin({ setOpen, editCabins }: ICFN) {
     formState: { errors },
   } = useForm<CabinResponse>({
     defaultValues: isEditSession
-      ? { ...editValues, image: editCabins?.image as string }
+      ? { ...editValues, image: editCabins?.image }
       : {},
   });
-
-  const { mutate: CreateCabin, isPending: isCreating } = IUDApiResponse({
-    queryKey: "cabins",
-    FN: insertAndEditCabin,
-    loading: "inserting...",
-    success: "inserted successfully",
-    error: "inserting failed",
-    reset: reset,
-    setOpen: setOpen,
-  });
-  const { mutate: EditingCabin, isPending: isEditing } = IUDApiResponse({
-    queryKey: "cabins",
-    FN: insertAndEditCabin,
-    loading: "editing...",
-    success: "editing successfully",
-    error: "editing failed",
-    reset: reset,
-    setOpen: setOpen,
-  });
-
+  const mutationConfigs = [{ key: "Creating" }, { key: "Editing" }];
+  const mutations = mutationConfigs.reduce<Record<string, MutationResult>>(
+    (acc, config) => {
+      const { key } = config;
+      const { mutate, isPending } = IUDApiResponse({
+        queryKey: "cabins",
+        FN: insertAndEditCabin,
+        reset: reset,
+        setOpen: setOpen,
+        FunctionName: key,
+      });
+      acc[`${key}Cabins`] = { mutate, isPending };
+      return acc;
+    },
+    {}
+  );
+  const { CreatingCabins, EditingCabins } = mutations;
+  const isPending = EditingCabins.isPending || CreatingCabins.isPending;
   const onSubmit: SubmitHandler<CabinResponse> = async (data) => {
-    const Data = {
-      ...data,
-      image:
-        typeof data.image === "string"
-          ? data.image
-          : Array.isArray(data.image)
-          ? data.image[0]
-          : data.image,
-    };
-    if (isEditSession) {
-      EditingCabin({
-        id: editID,
-        Data,
-      });
-    } else {
-      CreateCabin({
-        Data,
-      });
-    }
-  };
+    const isImage = typeof data.image === "string";
+    const image = isImage ? data.image : (data.image as File[])[0];
+    const Data = { ...data, image: image };
 
-  const isPending = isCreating || isEditing;
-  const onError = (error: object) => {
-    console.log(error);
+    if (isEditSession) EditingCabins.mutate({ id: editID, Data });
+    else CreatingCabins.mutate({ Data });
   };
 
   return (
-    <InsertDataLayout
-      onSubmit={handleSubmit(onSubmit, onError)}
-      setOpen={setOpen}
-    >
+    <InsertDataLayout onSubmit={handleSubmit(onSubmit)} setOpen={setOpen}>
       <FormRowComponent error={errors.name?.message} name={"Cabin Name"}>
         <InputsFiled
           disabled={isPending}

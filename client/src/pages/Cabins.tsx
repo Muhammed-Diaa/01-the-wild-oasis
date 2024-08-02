@@ -2,6 +2,7 @@ import styled from "styled-components";
 import CabinTable from "../features/cabins/CabinTable";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
+import Meta from "../utils/Meta";
 
 const Container = styled.div`
   display: flex;
@@ -10,15 +11,17 @@ const Container = styled.div`
 `;
 function Cabins() {
   return (
-    <Container>
-      <Row type="row">
-        <Heading as="h1">All cabins</Heading>
-        <p>TEST</p>
-      </Row>
-      <Row>
-        <CabinTable />
-      </Row>
-    </Container>
+    <Meta title="Cabins">
+      <Container>
+        <Row type="row">
+          <Heading as="h1">All cabins</Heading>
+          <p>TEST</p>
+        </Row>
+        <Row>
+          <CabinTable />
+        </Row>
+      </Container>
+    </Meta>
   );
 }
 

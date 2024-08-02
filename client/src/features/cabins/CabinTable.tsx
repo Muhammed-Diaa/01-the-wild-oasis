@@ -1,9 +1,12 @@
 import styled from "styled-components";
-import { getCabins } from "../../services/apiCabins";
+
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
-import { ApiResponse } from "../../utils/ApiResponse";
+
 import { CabinResponse } from "../../types/ResponseTypes";
+import { ApiGetResponse } from "../../utils/ApiResponses";
+import { getCabins } from "../../services/apiCabins";
+
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
   font-size: 1.4rem;
@@ -27,11 +30,11 @@ const TableHeader = styled.header`
 
 const CabinTable = () => {
   const {
-    data: cabins,
+    data: cabins = [],
     isPending,
     error,
-  } = ApiResponse({
-    DataName: "cabins",
+  } = ApiGetResponse({
+    queryKey: "cabins",
     queryFn: getCabins,
   });
 

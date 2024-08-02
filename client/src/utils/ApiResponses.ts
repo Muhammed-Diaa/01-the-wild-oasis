@@ -5,13 +5,9 @@ import {
 } from "../types/ResponseTypes";
 import toast from "react-hot-toast";
 
-export const ApiResponse = ({ DataName, queryFn }: ApiResponseProps) => {
-  const {
-    data,
-    isPending,
-    error,
-  }: { data: unknown; isPending: boolean; error: Error | null } = useQuery({
-    queryKey: [`${DataName}`],
+export const ApiGetResponse = ({ queryKey, queryFn }: ApiResponseProps) => {
+  const { data, isPending, error } = useQuery({
+    queryKey: [`${queryKey}`],
     queryFn,
   });
   return {
@@ -20,32 +16,32 @@ export const ApiResponse = ({ DataName, queryFn }: ApiResponseProps) => {
     error,
   };
 };
-
 export const IUDApiResponse = <T>({
   queryKey,
   FN,
-  loading,
-  success,
-  error,
+  FunctionName,
   reset,
   setOpen,
+  onError,
 }: DeleteApiResponseProps<T>) => {
   const queryClient = useQueryClient();
-
   const { mutate, isPending } = useMutation({
     mutationFn: (data: T) =>
       toast.promise(FN(data), {
-        loading,
-        success,
-        error,
+        loading: `${FunctionName}...`,
+        success: `${FunctionName} successfully`,
+        error: `${FunctionName} failed`,
       }),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [queryKey],
       });
-      reset && reset();
-      setOpen && setOpen(false);
+      reset?.();
+      setOpen?.(false);
+    },
+    onError: () => {
+      onError?.(false);
     },
   });
 

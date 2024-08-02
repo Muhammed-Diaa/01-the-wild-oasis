@@ -15,10 +15,11 @@ const Outlay = styled.div`
   padding: 4rem 4.8rem 6.4rem;
   border-top-left-radius: 2rem;
   background-color: var(--color-grey-100);
-  text-align: -webkit-center;
+  /* text-align: -webkit-center; */
 `;
 
 const MaxWidth = styled.div`
+  margin: 0 auto;
   max-width: 120rem;
 `;
 function AppLayout() {

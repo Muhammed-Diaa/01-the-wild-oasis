@@ -43,12 +43,21 @@ const OptionDots = styled(HiOutlineDotsVertical)`
 
 interface Children {
   children: React.ReactNode;
+  dubRef: React.RefObject<HTMLButtonElement>;
 }
-const Toggle = ({ children }: Children) => {
+const Toggle = ({ children, dubRef }: Children) => {
   const toggleRef = useRef<HTMLUListElement>(null);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
+      // Check if dubRef is open, if so close it after 60 seconds
+      if (dubRef.current) {
+        setTimeout(() => {
+          setOpenToggle(false);
+        }, 100);
+      }
+
+      // If toggleRef is open and click is outside of toggleRef, close it immediately
+      else if (
         toggleRef.current &&
         !toggleRef.current.contains(event.target as Node)
       ) {
@@ -60,6 +69,7 @@ const Toggle = ({ children }: Children) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [openToggle, setOpenToggle] = useState(false);
   return (

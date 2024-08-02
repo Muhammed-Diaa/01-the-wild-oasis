@@ -1,14 +1,14 @@
 import { Cabins } from "../types/ResponseTypes";
 import supabase from "./supabase";
 
+const URL = import.meta.env.VITE_SUPABASE_URL;
+
 export const getCabins = async () => {
   const { data, error } = await supabase.from("cabins").select("*");
   if (error) throw new Error("Cabins could not be loaded");
 
   return data;
 };
-const URL = import.meta.env.VITE_SUPABASE_URL;
-
 export const insertAndEditCabin = async ({ id, Data }: Cabins) => {
   const isImageString = typeof Data.image === "string";
   const uniqueIdentifier = `${Math.random()}-${Date.now()}`;
@@ -20,7 +20,6 @@ export const insertAndEditCabin = async ({ id, Data }: Cabins) => {
     ? (Data.image as string)
     : `${URL}/storage/v1/object/public/cabins-Images/${imageName}`;
 
-  console.log(Data);
   let query;
 
   if (!id) {
@@ -32,7 +31,7 @@ export const insertAndEditCabin = async ({ id, Data }: Cabins) => {
       .eq("id", id);
   }
 
-  const { data, error } = await query.select();
+  const { data, error } = await query.select().single();
 
   if (error) throw new Error(`${id ? "inserting" : "updating"} failed`);
   if (Data.image instanceof File) {

@@ -9,7 +9,7 @@ function Meta({ children, title }: Props) {
   return (
     <>
       <Helmet>
-        <title>{`The Wild Osais | ` + title}</title>
+        <title>{`The Wild Oasis | ${title}`}</title>
         <meta name="description" content="Place your order at My Restaurant" />
       </Helmet>
       {children}

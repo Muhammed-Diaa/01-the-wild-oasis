@@ -35,7 +35,7 @@ const Error = styled.span`
 `;
 interface Props {
   children: React.ReactNode;
-  error: undefined | string;
+  error?: string;
   name: string;
 }
 const FormRowComponent = ({ name, children, error }: Props) => {

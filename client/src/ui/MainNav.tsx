@@ -5,6 +5,7 @@ import { useState } from "react";
 // import CreateCabinForm from "../features/cabins/CreateCabinForm";
 import { NavBtnList } from "../utils/MapLists";
 import CreateAndEditCabin from "../features/cabins/CreateAndEditCabin";
+import Meta from "../utils/Meta";
 
 const NavList = styled.ul`
   display: flex;
@@ -78,7 +79,11 @@ export default function MainNav() {
           <Button onClick={() => setOpen(true)}>Add new cabin</Button>
         </BtnDiv>
       )}
-      {open && <CreateAndEditCabin setOpen={setOpen} />}
+      {open && (
+        <Meta title="Add Cabin">
+          <CreateAndEditCabin setOpen={setOpen} />
+        </Meta>
+      )}
     </NavList>
   );
 }

@@ -1,6 +1,7 @@
+import { Settings } from "../types/ResponseTypes";
 import supabase from "./supabase";
 
-export async function getSettings() {
+export const getSettings = async () => {
   const { data, error } = await supabase.from("settings").select("*").single();
 
   if (error) {
@@ -8,10 +9,9 @@ export async function getSettings() {
     throw new Error("Settings could not be loaded");
   }
   return data;
-}
-
+};
 // We expect a newSetting object that looks like {setting: newValue}
-export async function updateSetting(newSetting) {
+export const updateSetting = async (newSetting: Settings) => {
   const { data, error } = await supabase
     .from("settings")
     .update(newSetting)
@@ -24,4 +24,4 @@ export async function updateSetting(newSetting) {
     throw new Error("Settings could not be updated");
   }
   return data;
-}
+};

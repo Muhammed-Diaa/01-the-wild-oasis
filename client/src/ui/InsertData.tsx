@@ -22,9 +22,9 @@ const Layout = styled.div`
   backdrop-filter: blur(10px);
 `;
 interface Props {
-  setOpen: (open: boolean) => void;
+  setOpen?: (open: boolean) => void;
   children: React.ReactNode;
-  onSubmit: FormEventHandler<HTMLFormElement>;
+  onSubmit?: FormEventHandler<HTMLFormElement>;
 }
 function InsertDataLayout({ onSubmit, setOpen, children }: Props) {
   const openRef = useRef<HTMLFormElement>(null);
@@ -32,7 +32,7 @@ function InsertDataLayout({ onSubmit, setOpen, children }: Props) {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (openRef.current && !openRef.current.contains(event.target as Node)) {
-        setOpen(false);
+        setOpen?.(false);
       }
     };
 

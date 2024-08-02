@@ -10,22 +10,38 @@ export interface CabinResponse {
   regularPrice: number;
   discount: number;
   description: string;
-  image: File | string | File[];
+  image: string | File | File[];
 }
 export interface ApiResponseProps {
-  DataName: string;
+  queryKey: string;
   queryFn: () => void;
 }
 export interface DeleteApiResponseProps<T> {
+  FunctionName: string;
   queryKey: string | string[];
-  FN: (data: T) => Promise<unknown>; // Adjust the return type as needed
-  loading: string;
-  success: string;
-  error: string;
+  FN: (data: T) => Promise<unknown>;
   reset?: () => void;
   setOpen?: (value: boolean) => void;
+  onError?: (value: boolean) => void;
 }
 export interface ICFN {
   setOpen: (open: boolean) => void;
   editCabins?: CabinResponse;
+}
+export interface MutationResult {
+  mutate: (data: Cabins) => void;
+  isPending: boolean;
+}
+export interface ConfirmDeleteProps {
+  resourceName: string;
+  onConfirm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  disabled: boolean;
+  setOpen: (open: boolean) => void;
+}
+export interface Settings {
+  id?: number;
+  minBookingLength: number;
+  maxBookingLength: number;
+  maxGuestsPerBooking: number;
+  breakfastPrice: number;
 }
