@@ -1,8 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import Button from "./Button";
-import { useState } from "react";
-// import CreateCabinForm from "../features/cabins/CreateCabinForm";
 import { NavBtnList } from "../utils/MapLists";
 import CreateAndEditCabin from "../features/cabins/CreateAndEditCabin";
 import Meta from "../utils/Meta";
@@ -61,7 +58,6 @@ const BtnDiv = styled.div`
   padding-right: 3.2rem;
 `;
 export default function MainNav() {
-  const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
 
   return (
@@ -74,15 +70,13 @@ export default function MainNav() {
           </Link>
         ))}
       </Div>
+
       {pathname.startsWith("/cabins") && (
         <BtnDiv>
-          <Button onClick={() => setOpen(true)}>Add new cabin</Button>
+          <Meta title="Add Cabin">
+            <CreateAndEditCabin />
+          </Meta>
         </BtnDiv>
-      )}
-      {open && (
-        <Meta title="Add Cabin">
-          <CreateAndEditCabin setOpen={setOpen} />
-        </Meta>
       )}
     </NavList>
   );

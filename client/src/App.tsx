@@ -8,6 +8,7 @@ import GlobalStyles from "./Styles/GlobalStyles";
 
 import queryClient from "./utils/queryClient";
 import router from "./utils/router";
+import ToggleContextProvider from "./context/toggle";
 
 function App() {
   return (
@@ -15,23 +16,24 @@ function App() {
       <GlobalStyles />
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={true} />
+        <ToggleContextProvider>
+          <RouterProvider router={router} />
 
-        <RouterProvider router={router} />
-
-        <Toaster
-          position="top-center"
-          gutter={12}
-          toastOptions={{
-            style: {
-              maxWidth: "500px",
-              background: "var(--color-grey-0)",
-              color: "var(--color-grey-700)",
-              padding: "1rem",
-              fontSize: "1.4rem",
-              borderRadius: "8px",
-            },
-          }}
-        />
+          <Toaster
+            position="top-center"
+            gutter={12}
+            toastOptions={{
+              style: {
+                maxWidth: "500px",
+                background: "var(--color-grey-0)",
+                color: "var(--color-grey-700)",
+                padding: "1rem",
+                fontSize: "1.4rem",
+                borderRadius: "8px",
+              },
+            }}
+          />
+        </ToggleContextProvider>
       </QueryClientProvider>
     </HelmetProvider>
   );

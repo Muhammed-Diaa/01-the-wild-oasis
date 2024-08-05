@@ -45,11 +45,33 @@ const variations = {
     &:hover {
       background-color: var(--color-red-800);
     }
+    &:focus {
+      outline: none;
+    }
+  `,
+  toggle: css`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: none;
+    font-weight: 600;
+    padding: 10px 16px;
+    z-index: 2;
+    border-radius: 0px;
+    background-color: var(--color-grey-50);
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      background-color: var(--color-grey-200);
+    }
   `,
 };
+
 const Button = styled.button<ButtonFace>`
   ${(props) => sizes[props.$size || "medium"]};
   ${(props) => variations[props.$variation || "primary"]}
+
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
   width: 100%;

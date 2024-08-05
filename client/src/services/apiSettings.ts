@@ -1,4 +1,3 @@
-import { Settings } from "../types/ResponseTypes";
 import supabase from "./supabase";
 
 export const getSettings = async () => {
@@ -10,12 +9,18 @@ export const getSettings = async () => {
   }
   return data;
 };
-// We expect a newSetting object that looks like {setting: newValue}
-export const updateSetting = async (newSetting: Settings) => {
-  const { data, error } = await supabase
+
+interface Settings {
+  minBookingLength: number;
+  maxBookingLength: number;
+  maxGuestsPerBooking: number;
+  breakfastPrice: number;
+}
+
+export const updateSetting = async (data: unknown): Promise<Settings> => {
+  const { data: updatedData, error } = await supabase
     .from("settings")
-    .update(newSetting)
-    // There is only ONE row of settings, and it has the ID=1, and so this is the updated one
+    .update(data)
     .eq("id", 1)
     .single();
 
@@ -23,5 +28,6 @@ export const updateSetting = async (newSetting: Settings) => {
     console.error(error);
     throw new Error("Settings could not be updated");
   }
-  return data;
+
+  return updatedData;
 };

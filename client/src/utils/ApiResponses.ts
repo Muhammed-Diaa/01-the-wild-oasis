@@ -1,9 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  ApiResponseProps,
-  DeleteApiResponseProps,
-} from "../types/ResponseTypes";
+import { ApiResponseProps, IUDApiResponseProps } from "../types/ResponseTypes";
 import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
 
 export const ApiGetResponse = ({ queryKey, queryFn }: ApiResponseProps) => {
   const { data, isPending, error } = useQuery({
@@ -20,30 +18,23 @@ export const IUDApiResponse = <T>({
   queryKey,
   FN,
   FunctionName,
-  reset,
-  setOpen,
-  onError,
-}: DeleteApiResponseProps<T>) => {
+}: IUDApiResponseProps<T>) => {
+  const { reset: weca } = useForm();
   const queryClient = useQueryClient();
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, status } = useMutation({
     mutationFn: (data: T) =>
       toast.promise(FN(data), {
         loading: `${FunctionName}...`,
         success: `${FunctionName} successfully`,
         error: `${FunctionName} failed`,
       }),
-
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [queryKey],
       });
-      reset?.();
-      setOpen?.(false);
-    },
-    onError: () => {
-      onError?.(false);
+      weca();
     },
   });
 
-  return { mutate, isPending };
+  return { mutate, isPending, status };
 };

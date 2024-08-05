@@ -1,21 +1,28 @@
 import { useForm } from "react-hook-form";
-import { getSettings } from "../../services/apiSettings";
-
+import { getSettings, updateSetting } from "../../services/apiSettings";
 import FormData from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Inputs";
-import { ApiGetResponse } from "../../utils/ApiResponses";
+import { ApiGetResponse, IUDApiResponse } from "../../utils/ApiResponses";
+import { Settings } from "../../types/ResponseTypes";
 
 function UpdateSettingsForm() {
-  const { register } = useForm();
-  console.log("Register", register);
+  const { register, handleSubmit } = useForm<Settings>();
   const { data: setting } = ApiGetResponse({
     queryKey: "settings",
     queryFn: getSettings,
   });
+  const { isPending, mutate } = IUDApiResponse<Settings>({
+    queryKey: "settings",
+    FN: updateSetting,
+    FunctionName: "Updating settings",
+  });
+  const onSubmit = (data: Settings) => {
+    console.log(data);
+    mutate(data);
+  };
 
   if (!setting) return;
-
   const {
     minBookingLength,
     maxBookingLength,
@@ -23,41 +30,51 @@ function UpdateSettingsForm() {
     breakfastPrice,
   } = setting;
 
-  console.log(setting);
   return (
-    <FormData>
+    <FormData onSubmit={handleSubmit(onSubmit)}>
       <FormRow name="Minimum nights/booking">
         <Input
-          type="number"
+          disabled={isPending}
+          {...register("minBookingLength")}
           id="min-nights"
+          type="number"
+          placeholder="Min Booking Length"
           defaultValue={minBookingLength}
-          {...register}
         />
       </FormRow>
       <FormRow name="Maximum nights/booking">
         <Input
-          type="number"
+          disabled={isPending}
+          {...register("maxBookingLength")}
           id="max-nights"
+          type="number"
+          placeholder="Max Booking Length"
           defaultValue={maxBookingLength}
-          {...register}
         />
       </FormRow>
       <FormRow name="Maximum guests/booking">
         <Input
-          type="number"
+          disabled={isPending}
+          {...register("maxGuestsPerBooking")}
           id="max-guests"
+          type="number"
+          placeholder="Max Guests Per Booking"
           defaultValue={maxGuestsPerBooking}
-          {...register}
         />
       </FormRow>
       <FormRow name="Breakfast price">
         <Input
-          type="number"
+          disabled={isPending}
+          {...register("breakfastPrice")}
           id="breakfast-price"
+          type="number"
+          placeholder="Breakfast Price"
           defaultValue={breakfastPrice}
-          {...register}
         />
       </FormRow>
+      <button type="submit" disabled={isPending}>
+        {isPending ? "Saving..." : "Save Settings"}
+      </button>
     </FormData>
   );
 }

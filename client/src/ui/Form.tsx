@@ -16,6 +16,7 @@ const type = {
 const FormData = styled(Form)<{ $type?: keyof typeof type }>`
   ${(props) => type[props.$type || "default"]}
 
+  margin-top: 8rem;
   overflow: hidden;
   font-size: 1.4rem;
 `;

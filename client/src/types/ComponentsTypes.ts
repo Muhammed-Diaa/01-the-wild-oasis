@@ -3,7 +3,7 @@ export interface HeadingFace {
 }
 export interface ButtonFace {
   $size?: "small" | "medium" | "large";
-  $variation?: "primary" | "secondary" | "danger";
+  $variation?: "primary" | "secondary" | "danger" | "toggle";
 }
 export interface RowFace {
   type?: "row" | "column";
