@@ -89,7 +89,7 @@ const CabinRow = ({ Data }: { Data: CabinResponse }) => {
         <Menu.Btn>
           <DotsVertical />
         </Menu.Btn>
-        <Menu.List>
+        <Menu.List close={false}>
           <Button
             $variation="toggle"
             onClick={onDuplicate}
@@ -101,7 +101,7 @@ const CabinRow = ({ Data }: { Data: CabinResponse }) => {
             }
           />
           <CreateAndEditCabin editCabins={Data} />
-          <ConfirmDelete id={id ?? 0} />
+          <ConfirmDelete id={id ?? 0} />{" "}
         </Menu.List>
       </Menu>
     </Table.Row>

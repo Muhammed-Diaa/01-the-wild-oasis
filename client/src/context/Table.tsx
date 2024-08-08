@@ -1,19 +1,16 @@
 import { createContext, useContext } from "react";
 import styled from "styled-components";
 import { CabinResponse } from "../types/ResponseTypes";
+import { Children } from "../types/ComponentsTypes";
 
 interface TableProps {
-  columns: string;
-  children: React.ReactNode;
-}
-interface Children {
+  $columns: string;
   children: React.ReactNode;
 }
 
 const TabelContext = createContext<{
   columns: string;
 }>({ columns: "" });
-
 const useTable = () => {
   return useContext(TabelContext);
 };
@@ -24,9 +21,9 @@ const StyledTable = styled.div`
   background-color: var(--color-grey-0);
   border-radius: 7px;
 `;
-const CommonRow = styled.div<{ columns: string }>`
+const CommonRow = styled.div<{ $columns: string }>`
   display: grid;
-  grid-template-columns: ${(props) => props.columns};
+  grid-template-columns: ${(props) => props.$columns};
   column-gap: 2.4rem;
   align-items: center;
   transition: none;
@@ -68,7 +65,8 @@ const Empty = styled.p`
   margin: 2.4rem;
 `;
 
-const Table = ({ children, columns }: TableProps) => {
+const Table = ({ children, $columns }: TableProps) => {
+  const columns = $columns;
   return (
     <TabelContext.Provider value={{ columns }}>
       <StyledTable>{children}</StyledTable>
@@ -78,7 +76,7 @@ const Table = ({ children, columns }: TableProps) => {
 const Header = ({ children }: Children) => {
   const { columns } = useTable();
   return (
-    <StyledHeader role="row" as="header" columns={columns}>
+    <StyledHeader role="row" as="header" $columns={columns}>
       {children}
     </StyledHeader>
   );
@@ -86,12 +84,11 @@ const Header = ({ children }: Children) => {
 const Row = ({ children }: Children) => {
   const { columns } = useTable();
   return (
-    <StyledRow role="row" columns={columns}>
+    <StyledRow role="row" $columns={columns}>
       {children}
     </StyledRow>
   );
 };
-
 const Body = ({
   data,
   render,

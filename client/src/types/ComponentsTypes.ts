@@ -17,3 +17,7 @@ export type Inputs = {
   description: string;
   image: string | File[];
 };
+
+export interface Children {
+  children: React.ReactNode;
+}

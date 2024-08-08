@@ -59,7 +59,7 @@ const Toggles = ({ children }: { children: React.ReactNode }) => {
   const [OpenModel, setIsOpenModel] = useState(false);
   const openRef = useRef<HTMLButtonElement>(null);
   const close = () => setIsOpenModel(false);
-  const toggle = () => setIsOpenModel((open) => !open);
+  const toggle = () => setIsOpenModel(true);
 
   return (
     <ToggleContext.Provider value={{ OpenModel, openRef, close, toggle }}>

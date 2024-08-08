@@ -1,10 +1,8 @@
 import React, { createContext, useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import useOutsideClick from "../hooks/useOutsideClick";
+import { Children } from "../types/ComponentsTypes";
 
-interface MenuProps {
-  children: React.ReactNode;
-}
 const MenuContext = createContext<{
   openMenu: boolean;
   setOpenMenu: () => void;
@@ -37,7 +35,8 @@ const Option = styled.ul`
   flex-direction: column;
   position: absolute;
   background-color: var(--color-grey-50);
-  width: 13rem;
+  z-index: 8;
+  width: 14rem;
   height: auto;
   right: 13px;
   top: 26px;
@@ -45,7 +44,7 @@ const Option = styled.ul`
   box-shadow: var(--shadow-lg);
 `;
 
-const Menu = ({ children }: MenuProps) => {
+const Menu = ({ children }: Children) => {
   const MenuRef = useRef<HTMLUListElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [openMenu, setOpenMenu] = useState(false);
@@ -64,8 +63,7 @@ const Menu = ({ children }: MenuProps) => {
     </MenuContext.Provider>
   );
 };
-
-const Btn = ({ children }: MenuProps) => {
+const Btn = ({ children }: Children) => {
   const { setOpenMenu, buttonRef } = useMenu();
 
   return (
@@ -74,9 +72,21 @@ const Btn = ({ children }: MenuProps) => {
     </Button>
   );
 };
-const List = ({ children }: MenuProps) => {
-  const { openMenu, MenuRef } = useMenu();
-  return openMenu && <Option ref={MenuRef}>{children}</Option>;
+const List = ({ children, close }: Children & { close: boolean }) => {
+  const { openMenu, MenuRef, setOpenMenu } = useMenu();
+  return (
+    openMenu && (
+      <Option ref={MenuRef}>
+        <div
+          onClick={() => {
+            close && setOpenMenu();
+          }}
+        >
+          {children}
+        </div>
+      </Option>
+    )
+  );
 };
 
 Menu.List = List;
