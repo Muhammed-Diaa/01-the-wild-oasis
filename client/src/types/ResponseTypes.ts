@@ -1,9 +1,27 @@
 export interface ICFN {
   editCabins?: CabinResponse;
+  onCloseModal?: () => void;
 }
 export interface Cabins {
   id?: number;
   Data: CabinResponse;
+}
+export interface Booking {
+  id: any;
+  created_at: any;
+  startDate: any;
+  endDate: any;
+  numNights: any;
+  numGuests: any;
+  totalPrice: any;
+  status: any;
+  guests: {
+    fullName: any;
+    email: any;
+  };
+  cabins: {
+    name: any;
+  };
 }
 export interface CabinResponse {
   id?: number;
@@ -24,10 +42,8 @@ export interface IUDApiResponseProps<T> {
   queryKey: string | string[];
   FN: (data: T) => Promise<unknown>;
   reset?: () => void;
-  setOpen?: (value: boolean) => void;
-  onError?: (value: boolean) => void;
+  onCloseModal?: () => void;
 }
-
 export interface MutationResult {
   mutate: (data: Cabins) => void;
   isPending: boolean;

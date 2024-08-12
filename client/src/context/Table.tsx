@@ -93,8 +93,8 @@ const Body = ({
   data,
   render,
 }: {
-  data: CabinResponse[];
-  render: (cabin: CabinResponse) => JSX.Element;
+  data: unknown[];
+  render: (data: unknown) => JSX.Element;
 }) => {
   if (!data || data.length === 0)
     return <Empty>No data to show at the moment</Empty>;

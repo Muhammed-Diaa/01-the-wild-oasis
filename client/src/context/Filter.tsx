@@ -1,8 +1,8 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { Children } from "../types/ComponentsTypes";
-import Menu from "./Menu";
+import Menus from "./Menu";
 
 const StyledFilter = styled.div`
   border: 1px solid var(--color-grey-100);
@@ -69,7 +69,7 @@ const useFilter = () => {
 const Filter = ({ children }: Children) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const filter = searchParams.get("discount") || "all";
-  const sort = searchParams.get("sortBy") || "price-asc";
+  const sort = searchParams.get("sortBy") || "startDate-asc";
   const setFilter = (filter: string) => {
     searchParams.set("discount", filter);
     setSearchParams(searchParams);
@@ -99,26 +99,26 @@ const Btn = ({ value }: { value: string }) => {
   );
 };
 const Sort = ({ options }: { options: { value: string; label: string }[] }) => {
-  const { sort, setSort } = useFilter();
+  const { setSort } = useFilter();
+  const [name, setName] = useState("Sort");
   return (
-    <Menu>
-      <Menu.Btn>
-        <FilterButton>Sort</FilterButton>
-      </Menu.Btn>
-      <Menu.List close={true}>
-        {options.map((option) => (
-          <FilterButton
-            key={option.value}
-            $active={JSON.stringify(sort === option.value)}
-            $size="small"
-            disabled={sort === option.value}
-            onClick={() => setSort(option.value)}
-          >
-            {option.label}
-          </FilterButton>
-        ))}
-      </Menu.List>
-    </Menu>
+    <Menus>
+      <Menus.Toggle Btn={name} id={"sort"}>
+        <Menus.List width="sort" id={"sort"}>
+          {options.map((option) => (
+            <Menus.Button
+              key={option.label}
+              onClick={() => {
+                setName(option.label);
+                setSort(option.value);
+              }}
+            >
+              {option.label}
+            </Menus.Button>
+          ))}
+        </Menus.List>
+      </Menus.Toggle>
+    </Menus>
   );
 };
 

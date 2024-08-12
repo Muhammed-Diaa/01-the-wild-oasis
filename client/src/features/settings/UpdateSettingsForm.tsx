@@ -5,6 +5,7 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Inputs";
 import { ApiGetResponse, IUDApiResponse } from "../../utils/ApiResponses";
 import { Settings } from "../../types/ResponseTypes";
+import Button from "../../ui/Button";
 
 function UpdateSettingsForm() {
   const { register, handleSubmit } = useForm<Settings>();
@@ -72,8 +73,11 @@ function UpdateSettingsForm() {
           defaultValue={breakfastPrice}
         />
       </FormRow>
-      <button type="submit" disabled={isPending}>
-        {isPending ? "Saving..." : "Save Settings"}
+      <button>
+        {" "}
+        <Button type="submit" disabled={isPending}>
+          {isPending ? "Saving..." : "Save Settings"}
+        </Button>
       </button>
     </FormData>
   );

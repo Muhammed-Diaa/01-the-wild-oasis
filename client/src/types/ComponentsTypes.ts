@@ -4,6 +4,7 @@ export interface HeadingFace {
 export interface ButtonFace {
   $size?: "small" | "medium" | "large";
   $variation?: "primary" | "secondary" | "danger" | "toggle";
+  $width?: "full" | "normal";
 }
 export interface RowFace {
   type?: "row" | "column";

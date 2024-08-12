@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { NavBtnList } from "../utils/MapLists";
 import CreateAndEditCabin from "../features/cabins/CreateAndEditCabin";
 import Meta from "../utils/Meta";
+import Menus from "../context/Menu";
+import Modal from "../context/Modal";
+import Button from "./Button";
 
 const NavList = styled.ul`
   display: flex;
@@ -55,7 +58,7 @@ const Div = styled.div`
 `;
 const BtnDiv = styled.div`
   width: 100%;
-  padding-right: 3.2rem;
+  padding-right: 3.6rem;
 `;
 export default function MainNav() {
   const { pathname } = useLocation();
@@ -72,11 +75,20 @@ export default function MainNav() {
       </Div>
 
       {pathname.startsWith("/cabins") && (
-        <BtnDiv>
-          <Meta title="Add Cabin">
-            <CreateAndEditCabin />
-          </Meta>
-        </BtnDiv>
+        <Meta title="Add Cabin">
+          <Menus>
+            <Modal>
+              <BtnDiv>
+                <Modal.Open opens={"create"}>
+                  <Button $width="full">Add Cabin</Button>
+                </Modal.Open>
+              </BtnDiv>
+              <Modal.Window name={"create"}>
+                <CreateAndEditCabin />
+              </Modal.Window>
+            </Modal>
+          </Menus>
+        </Meta>
       )}
     </NavList>
   );

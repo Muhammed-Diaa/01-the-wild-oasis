@@ -3,13 +3,13 @@
 import Heading from "./Heading";
 // import { ConfirmDeleteProps } from "../types/ResponseTypes";
 // import TapLayoutOverAll from "./TapLayoutOverAll"
-import { GoTrash } from "react-icons/go";
 
-import Toggles from "../context/toggle";
 import styled from "styled-components";
 import { IUDApiResponse } from "../utils/ApiResponses";
 import { deleteCabin } from "../services/apiCabins";
 import Meta from "../utils/Meta";
+import { StyledRow } from "./FormRow";
+import Button from "./Button";
 
 const StyledConfirmDelete = styled.div`
   width: 40rem;
@@ -29,8 +29,14 @@ const StyledConfirmDelete = styled.div`
   }
 `;
 
-function ConfirmDelete({ id }: { id: number }) {
-  const { mutate, isPending, status } = IUDApiResponse({
+function ConfirmDelete({
+  id,
+  onCloseModal,
+}: {
+  id: number;
+  onCloseModal?: () => void;
+}) {
+  const { mutate, isPending } = IUDApiResponse({
     queryKey: "cabins",
     FN: deleteCabin,
     FunctionName: "Deleting",
@@ -38,31 +44,24 @@ function ConfirmDelete({ id }: { id: number }) {
   const onDelete = () => {
     mutate(id);
   };
-  const state = status === "success";
+  // const state = status === "success";
   return (
     <Meta title="Delete Cabin">
-      <Toggles>
-        <Toggles.Btn $variation="toggle">
-          <span>Delete</span> <GoTrash />
-        </Toggles.Btn>
-        <Toggles.Menu>
-          <StyledConfirmDelete>
-            <Heading as="h3">Delete {"we"}</Heading>
-            <p>
-              Are you sure you want to delete this {"we"} permanently? This
-              action cannot be undone.
-            </p>
-          </StyledConfirmDelete>
-          <Toggles.Buttons
-            status={state}
-            onClick={onDelete}
-            isPending={isPending}
-            $variation="danger"
-          >
-            Delete
-          </Toggles.Buttons>
-        </Toggles.Menu>
-      </Toggles>
+      <StyledConfirmDelete>
+        <Heading as="h3">Delete {"we"}</Heading>
+        <p>
+          Are you sure you want to delete this {"we"} permanently? This action
+          cannot be undone.
+        </p>
+      </StyledConfirmDelete>
+      <StyledRow>
+        <Button onClick={() => onCloseModal?.()} $variation="secondary">
+          Cancel
+        </Button>
+        <Button $variation={"danger"} onClick={onDelete} disabled={isPending}>
+          Delete
+        </Button>
+      </StyledRow>
     </Meta>
   );
 }

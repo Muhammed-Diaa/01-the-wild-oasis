@@ -67,14 +67,19 @@ const variations = {
     }
   `,
 };
+const width = {
+  full: css`
+    width: 100%;
+  `,
+};
 
 const Button = styled.button<ButtonFace>`
   ${(props) => sizes[props.$size || "medium"]};
-  ${(props) => variations[props.$variation || "primary"]}
-
+  ${(props) => variations[props.$variation || "primary"]};
+  ${(props) => (props.$width === "full" ? width.full : null)};
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
-  width: 100%;
+  /* width: 100%; */
   cursor: pointer;
 `;
 export default Button;

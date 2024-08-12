@@ -20,6 +20,7 @@ function Cabins() {
             <Filter.Button value="All" />
             <Filter.Button value="No Discount" />
             <Filter.Button value="With Discount" />
+
             <Filter.Sort
               options={[
                 { value: "name-asc", label: "Sort by name (A-Z)" },

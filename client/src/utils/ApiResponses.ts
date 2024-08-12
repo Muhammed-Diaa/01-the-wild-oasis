@@ -18,6 +18,7 @@ export const IUDApiResponse = <T>({
   queryKey,
   FN,
   FunctionName,
+  onCloseModal,
 }: IUDApiResponseProps<T>) => {
   const { reset: weca } = useForm();
   const queryClient = useQueryClient();
@@ -33,6 +34,7 @@ export const IUDApiResponse = <T>({
         queryKey: [queryKey],
       });
       weca();
+      onCloseModal?.();
     },
   });
 

@@ -1,24 +1,26 @@
 import supabase from "../../services/supabase";
 import { TbMinus } from "react-icons/tb";
 import { RxCopy } from "react-icons/rx";
+import { FiEdit } from "react-icons/fi";
 import styled from "styled-components";
 
-import Button from "../../ui/Button";
-import Menu from "../../context/Menu";
-import ConfirmDelete from "../../ui/ConfirmDelete";
+import Table from "../../context/Table";
+import Modal from "../../context/Modal";
+import Menus from "../../context/Menu";
 
 import CreateAndEditCabin from "./CreateAndEditCabin";
-import Table from "../../context/Table";
+import ConfirmDelete from "../../ui/ConfirmDelete";
 
 import { insertAndEditCabin } from "../../services/apiCabins";
 import { IUDApiResponse } from "../../utils/ApiResponses";
 import { CabinResponse } from "../../types/ResponseTypes";
 import { formatCurrency } from "../../utils/helpers";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { IoTrashBinOutline } from "react-icons/io5";
+import { HiEllipsisVertical } from "react-icons/hi2";
 
 const Img = styled.img`
   display: block;
-  width: 8rem;
+  width: 7.2rem;
   aspect-ratio: 3 / 2;
   object-fit: fill;
   object-position: center;
@@ -33,6 +35,13 @@ const Cabin = styled.div`
 const Price = styled.div`
   font-family: "Sono";
   font-weight: 600;
+
+  color: #ff000061;
+  text-decoration: line-through;
+`;
+const TPrice = styled.div`
+  font-family: "Sono";
+  font-weight: 600;
 `;
 const Discount = styled.div`
   font-family: "Sono";
@@ -43,9 +52,6 @@ const TbSMinus = styled(TbMinus)`
   font-size: large;
   font-weight: bold;
 `;
-const DotsVertical = styled(BsThreeDotsVertical)`
-  font-size: 20px;
-`;
 
 const CabinRow = ({ Data }: { Data: CabinResponse }) => {
   const { id, ...rest }: CabinResponse = Data;
@@ -54,7 +60,6 @@ const CabinRow = ({ Data }: { Data: CabinResponse }) => {
     FN: insertAndEditCabin,
     FunctionName: "Duplicating",
   });
-
   const onDuplicate = async () => {
     const { data: existingCabins } = await supabase
       .from("cabins")
@@ -85,29 +90,33 @@ const CabinRow = ({ Data }: { Data: CabinResponse }) => {
       <Discount>
         {Data.discount ? formatCurrency(Data.discount) : <TbSMinus />}
       </Discount>
-      <Menu>
-        <Menu.Btn>
-          <DotsVertical />
-        </Menu.Btn>
-        <Menu.List close={false}>
-          <Button
-            $variation="toggle"
-            onClick={onDuplicate}
-            children={
-              <>
-                <span>Duplicate</span>
-                <RxCopy />
-              </>
-            }
-          />
-          <CreateAndEditCabin editCabins={Data} />
-          <ConfirmDelete id={id ?? 0} />{" "}
-        </Menu.List>
-      </Menu>
+      <TPrice>{formatCurrency(Data.regularPrice - Data.discount)}</TPrice>
+
+      <Modal>
+        <Menus>
+          <Menus.Toggle Btn={<HiEllipsisVertical />} id={`${Data.id}`}>
+            <Menus.List id={`${Data.id}`}>
+              <Menus.Button onClick={onDuplicate} icon={<RxCopy />}>
+                Duplicate
+              </Menus.Button>
+              <Modal.Open opens={"edit"}>
+                <Menus.Button icon={<FiEdit />}>Edit</Menus.Button>
+              </Modal.Open>
+              <Modal.Open opens={"delete"}>
+                <Menus.Button icon={<IoTrashBinOutline />}>Delete</Menus.Button>
+              </Modal.Open>
+            </Menus.List>
+          </Menus.Toggle>
+          <Modal.Window name="edit">
+            <CreateAndEditCabin editCabins={Data} />
+          </Modal.Window>
+          <Modal.Window name="delete">
+            <ConfirmDelete id={Data.id ?? 0} />
+          </Modal.Window>
+        </Menus>
+      </Modal>
     </Table.Row>
   );
 };
 
 export default CabinRow;
-
-//
