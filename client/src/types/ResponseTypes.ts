@@ -7,20 +7,20 @@ export interface Cabins {
   Data: CabinResponse;
 }
 export interface Booking {
-  id: any;
-  created_at: any;
-  startDate: any;
-  endDate: any;
-  numNights: any;
-  numGuests: any;
-  totalPrice: any;
-  status: any;
+  id: number;
+  created_at: string;
+  startDate: string;
+  endDate: string;
+  numNights: number;
+  numGuests: number;
+  totalPrice: number;
+  status: string;
   guests: {
-    fullName: any;
-    email: any;
+    fullName: string;
+    email: string;
   };
   cabins: {
-    name: any;
+    name: string;
   };
 }
 export interface CabinResponse {

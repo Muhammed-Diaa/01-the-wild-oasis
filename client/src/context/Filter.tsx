@@ -66,12 +66,15 @@ const FilterContext = createContext<{
 const useFilter = () => {
   return useContext(FilterContext);
 };
-const Filter = ({ children }: Children) => {
+const Filter = ({
+  children,
+  FilterOPtions,
+}: Children & { FilterOPtions: string }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const filter = searchParams.get("discount") || "all";
+  const filter = searchParams.get(FilterOPtions) || "all";
   const sort = searchParams.get("sortBy") || "startDate-asc";
   const setFilter = (filter: string) => {
-    searchParams.set("discount", filter);
+    searchParams.set(FilterOPtions, filter);
     setSearchParams(searchParams);
   };
   const setSort = (sort: string) => {

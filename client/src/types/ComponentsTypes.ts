@@ -9,6 +9,9 @@ export interface ButtonFace {
 export interface RowFace {
   type?: "row" | "column";
 }
+export interface statusProps {
+  type: "blue" | "green" | "silver";
+}
 export type Inputs = {
   id?: number;
   name: string;

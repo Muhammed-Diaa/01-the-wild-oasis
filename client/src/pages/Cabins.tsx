@@ -16,11 +16,10 @@ function Cabins() {
       <Container>
         <Row type="row">
           <Heading as="h1">All cabins</Heading>
-          <Filter>
+          <Filter FilterOPtions="dicount">
             <Filter.Button value="All" />
             <Filter.Button value="No Discount" />
             <Filter.Button value="With Discount" />
-
             <Filter.Sort
               options={[
                 { value: "name-asc", label: "Sort by name (A-Z)" },

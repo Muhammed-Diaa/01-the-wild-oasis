@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import { statusProps } from "../types/ComponentsTypes";
 
-const Tag = styled.span`
+const Tag = styled.span<statusProps>`
   width: fit-content;
   text-transform: uppercase;
   font-size: 1.1rem;

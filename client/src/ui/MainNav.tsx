@@ -6,6 +6,7 @@ import Meta from "../utils/Meta";
 import Menus from "../context/Menu";
 import Modal from "../context/Modal";
 import Button from "./Button";
+import Uploader from "../data/Uploader";
 
 const NavList = styled.ul`
   display: flex;
@@ -73,7 +74,6 @@ export default function MainNav() {
           </Link>
         ))}
       </Div>
-
       {pathname.startsWith("/cabins") && (
         <Meta title="Add Cabin">
           <Menus>
@@ -90,6 +90,7 @@ export default function MainNav() {
           </Menus>
         </Meta>
       )}
+      <Uploader />
     </NavList>
   );
 }

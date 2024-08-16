@@ -72,13 +72,10 @@ function UpdateSettingsForm() {
           placeholder="Breakfast Price"
           defaultValue={breakfastPrice}
         />
-      </FormRow>
-      <button>
-        {" "}
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Saving..." : "Save Settings"}
-        </Button>
-      </button>
+      </FormRow>{" "}
+      <Button type="submit" disabled={isPending}>
+        {isPending ? "Saving..." : "Save Settings"}
+      </Button>
     </FormData>
   );
 }

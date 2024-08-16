@@ -12,8 +12,8 @@ import router from "./utils/router";
 function App() {
   return (
     <HelmetProvider>
-      <GlobalStyles />
       <QueryClientProvider client={queryClient}>
+        <GlobalStyles />
         <ReactQueryDevtools initialIsOpen={true} />
 
         <RouterProvider router={router} />
