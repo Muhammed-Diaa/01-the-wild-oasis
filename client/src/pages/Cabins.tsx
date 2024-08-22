@@ -16,7 +16,7 @@ function Cabins() {
       <Container>
         <Row type="row">
           <Heading as="h1">All cabins</Heading>
-          <Filter FilterOPtions="dicount">
+          <Filter FilterOPtions="discount">
             <Filter.Button value="All" />
             <Filter.Button value="No Discount" />
             <Filter.Button value="With Discount" />

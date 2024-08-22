@@ -15,14 +15,10 @@ function Bookings() {
           <Filter.Button value="unconfirmed" />
           <Filter.Sort
             options={[
-              { value: "cabins.name-asc", label: "Sort by Name ( ↑ )" },
-              { value: "cabins.name-desc", label: "Sort by Name ( ↓ )" },
-              { value: "startDate-asc", label: "Sort by Date ( ↑ )" },
-              { value: "startDate-desc", label: "Sort by Date ( ↓ )" },
-              { value: "endDate-asc", label: "Sort by Date ( ↑ )" },
-              { value: "endDate-desc", label: "Sort by Date ( ↓ )" },
-              { value: "Price-asc", label: "Sort by Price ( ↑ )" },
-              { value: "Price-desc", label: "Sort by Price ( ↓ )" },
+              { value: "startDate-desc", label: "Sort by date ( recent )" },
+              { value: "startDate-asc", label: "Sort by date ( earlier )" },
+              { value: "totalPrice-desc", label: "Sort by amount ( high )" },
+              { value: "totalPrice-asc", label: "Sort by amount ( low )" },
             ]}
           />
         </Filter>

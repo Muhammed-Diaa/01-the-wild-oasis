@@ -14,7 +14,7 @@ const CabinTable = () => {
     isPending,
     error,
   } = ApiGetResponse({
-    queryKey: "cabins",
+    queryKey: ["cabins"],
     queryFn: getCabins,
   });
 
@@ -32,11 +32,10 @@ const CabinTable = () => {
       : cabin;
   });
 
+  console.log(query);
   const [filed, diraction] = sortBy.split("-");
   const modifire = diraction === "asc" ? 1 : -1;
-  const SortCabin = filteredCabins.sort(
-    (a, b) => (a[filed] - b[filed]) * modifire
-  );
+  filteredCabins.sort((a, b) => (a[filed] - b[filed]) * modifire);
 
   return (
     <Menu>
@@ -51,7 +50,7 @@ const CabinTable = () => {
           <div></div>
         </Table.Header>
         <Table.Body
-          data={SortCabin}
+          data={filteredCabins}
           render={(data: unknown) => {
             const cabin = data as CabinResponse;
             return <CabinRow key={cabin.id} Data={cabin} />;

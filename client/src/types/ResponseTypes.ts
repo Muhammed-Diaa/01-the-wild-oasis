@@ -34,7 +34,7 @@ export interface CabinResponse {
   image: string | File | File[];
 }
 export interface ApiResponseProps {
-  queryKey: string;
+  queryKey: unknown | string | object | [];
   queryFn: () => void;
 }
 export interface IUDApiResponseProps<T> {

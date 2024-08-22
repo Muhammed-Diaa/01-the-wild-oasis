@@ -6,33 +6,27 @@ import { getBooking } from "../../services/apiBookings";
 import { ApiGetResponse } from "../../utils/ApiResponses";
 import Spinner from "../../ui/Spinner";
 import { useSearchParams } from "react-router-dom";
+import Pagination from "../../ui/Pagination";
 
 function BookingTable() {
   const [searchParams] = useSearchParams();
-  const filtering = searchParams.get("status");
+
+  const filtering = searchParams.get("status") || "all";
   const sort = searchParams.get("sortBy") || "startDate-asc";
-  const { data, isPending } = ApiGetResponse({
-    queryKey: "bookings",
-    queryFn: getBooking,
+  const page = +(searchParams.get("page") ?? 1);
+  const [field, diraction] = sort.split("-");
+
+  const filter =
+    filtering === "all" ? undefined : { field: "status", value: filtering };
+  const sortBy = { field, diraction };
+
+  const { data, count, isPending } = ApiGetResponse({
+    queryKey: ["bookings", filter, sortBy, page],
+    queryFn: () => getBooking({ filter, sortBy, page }),
   });
   const bookings = data as unknown as Booking[];
   if (isPending) return <Spinner />;
   if (!bookings) return null;
-  const BookingFilter = bookings.filter((booking: Booking) => {
-    return filtering === "checked-in"
-      ? booking.status === "checked-in"
-      : filtering === "checked-out"
-      ? booking.status === "checked-out"
-      : filtering === "unconfirmed"
-      ? booking.status === "unconfirmed"
-      : booking;
-  });
-  // console.log(BookingFilter);
-  // const [filed, diraction] = sort.split("-");
-  // const modifire = diraction === "asc" ? 1 : -1;
-  // const SortBooking = BookingFilter.sort(
-  //   (a, b) => (a[filed] - b[filed]) * modifire
-  // );
 
   return (
     <Menus>
@@ -47,12 +41,15 @@ function BookingTable() {
         </Table.Header>
 
         <Table.Body
-          data={BookingFilter}
+          data={bookings}
           render={(data: unknown) => {
             const booking = data as Booking;
             return <BookingRow key={booking.id} booking={booking} />;
           }}
         />
+        <Table.Footer>
+          <Pagination results={count} />
+        </Table.Footer>
       </Table>
     </Menus>
   );

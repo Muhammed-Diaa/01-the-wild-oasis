@@ -14,7 +14,7 @@ import { CabinResponse, ICFN, MutationResult } from "../../types/ResponseTypes";
 import { insertAndEditCabin } from "../../services/apiCabins";
 import { IUDApiResponse } from "../../utils/ApiResponses";
 import { Form } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const FormData = styled(Form)`
   background-color: var(--color-grey-0);

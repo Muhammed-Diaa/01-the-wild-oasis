@@ -5,11 +5,13 @@ import { useForm } from "react-hook-form";
 
 export const ApiGetResponse = ({ queryKey, queryFn }: ApiResponseProps) => {
   const { data, isPending, error } = useQuery({
-    queryKey: [`${queryKey}`],
+    queryKey: [queryKey].flat(),
     queryFn,
   });
+
   return {
-    data,
+    data: (data as any)?.data,
+    count: (data as any)?.count,
     isPending,
     error,
   };
@@ -20,7 +22,7 @@ export const IUDApiResponse = <T>({
   FunctionName,
   onCloseModal,
 }: IUDApiResponseProps<T>) => {
-  const { reset: weca } = useForm();
+  const { reset } = useForm();
   const queryClient = useQueryClient();
   const { mutate, isPending, status } = useMutation({
     mutationFn: (data: T) =>
@@ -33,7 +35,7 @@ export const IUDApiResponse = <T>({
       queryClient.invalidateQueries({
         queryKey: [queryKey],
       });
-      weca();
+      reset();
       onCloseModal?.();
     },
   });

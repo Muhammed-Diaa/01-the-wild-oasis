@@ -9,7 +9,6 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
-import { statusProps } from "../../types/ComponentsTypes";
 
 const HeadingGroup = styled.div`
   display: flex;

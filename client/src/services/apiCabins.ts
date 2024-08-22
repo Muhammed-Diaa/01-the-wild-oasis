@@ -12,10 +12,9 @@ export const getCabins = async () => {
 export const insertAndEditCabin = async ({ id, Data }: Cabins) => {
   const isImageString = typeof Data.image === "string";
   const uniqueIdentifier = `${Math.random()}-${Date.now()}`;
-  const imageName = `${(Data.image as unknown as File).name}`.replace(
-    /\//g,
-    ""
-  );
+  const imageName = `${uniqueIdentifier}-${
+    (Data.image as unknown as File).name
+  }`.replace(/\//g, "");
 
   const imagePath = isImageString
     ? (Data.image as string)
