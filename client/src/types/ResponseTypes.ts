@@ -8,20 +8,26 @@ export interface Cabins {
 }
 export interface Booking {
   id: number;
-  created_at: string;
+  created_at: number;
   startDate: string;
   endDate: string;
   numNights: number;
   numGuests: number;
+  cabinPrice: number;
+  extrasPrice: number;
   totalPrice: number;
+  hasBreakfast: boolean;
+  observations: string;
+  isPaid: boolean;
   status: string;
   guests: {
     fullName: string;
     email: string;
+    country: string;
+    countryFlag: string;
+    nationalID: string;
   };
-  cabins: {
-    name: string;
-  };
+  cabins: { name: string };
 }
 export interface CabinResponse {
   id?: number;

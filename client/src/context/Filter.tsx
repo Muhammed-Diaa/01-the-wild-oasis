@@ -72,7 +72,7 @@ const Filter = ({
 }: Children & { FilterOPtions: string }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const filter = searchParams.get(FilterOPtions) || "all";
-  const sort = searchParams.get("sortBy") || "startDate-asc";
+  const sort = searchParams.get("sortBy") || "startDate-desc";
   const setFilter = (filter: string) => {
     searchParams.set(FilterOPtions, filter);
     setSearchParams(searchParams);

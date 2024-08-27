@@ -8,6 +8,8 @@ import Account from "../pages/Account";
 import Login from "../pages/Login";
 import PageNotFound from "../pages/PageNotFound";
 import AppLayout from "../ui/AppLayout";
+import BookingDetail from "../features/bookings/BookingDetail";
+import Checkin from "../ui/Checkin";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +27,14 @@ export const router = createBrowserRouter([
       {
         path: "/bookings",
         element: <Bookings />,
+      },
+      {
+        path: "/bookings/Details/:NameID",
+        element: <BookingDetail />,
+      },
+      {
+        path: "/bookings/checkin/:NameID",
+        element: <Checkin />,
       },
       {
         path: "/cabins",

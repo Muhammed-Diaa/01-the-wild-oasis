@@ -2,10 +2,11 @@ import Filter from "../context/Filter";
 import BookingTable from "../features/bookings/BookingTable";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
+import Meta from "../utils/Meta";
 
 function Bookings() {
   return (
-    <>
+    <Meta title="Bookings">
       <Row type="row">
         <Heading as="h1">All bookings</Heading>
         <Filter FilterOPtions="status">
@@ -24,7 +25,7 @@ function Bookings() {
         </Filter>
       </Row>
       <BookingTable />
-    </>
+    </Meta>
   );
 }
 

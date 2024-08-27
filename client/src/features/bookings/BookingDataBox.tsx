@@ -11,6 +11,7 @@ import DataItem from "../../ui/DataItem";
 import { Flag } from "../../ui/Flag";
 
 import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers";
+import { Booking } from "../../types/ResponseTypes";
 
 const StyledBookingDataBox = styled.section`
   /* Box */
@@ -68,7 +69,7 @@ const Guest = styled.div`
   }
 `;
 
-const Price = styled.div`
+const Price = styled.div<{ $isPaid: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -77,9 +78,9 @@ const Price = styled.div`
   margin-top: 2.4rem;
 
   background-color: ${(props) =>
-    props.isPaid ? "var(--color-green-100)" : "var(--color-yellow-100)"};
+    props.$isPaid ? "var(--color-green-100)" : "var(--color-yellow-100)"};
   color: ${(props) =>
-    props.isPaid ? "var(--color-green-700)" : "var(--color-yellow-700)"};
+    props.$isPaid ? "var(--color-green-700)" : "var(--color-yellow-700)"};
 
   & p:last-child {
     text-transform: uppercase;
@@ -102,7 +103,7 @@ const Footer = styled.footer`
 `;
 
 // A purely presentational component
-function BookingDataBox({ booking }) {
+function BookingDataBox({ booking }: { booking: Booking }) {
   const {
     created_at,
     startDate,
@@ -118,7 +119,7 @@ function BookingDataBox({ booking }) {
     guests: { fullName: guestName, email, country, countryFlag, nationalID },
     cabins: { name: cabinName },
   } = booking;
-
+  console.log(isPaid);
   return (
     <StyledBookingDataBox>
       <Header>
@@ -163,7 +164,7 @@ function BookingDataBox({ booking }) {
           {hasBreakfast ? "Yes" : "No"}
         </DataItem>
 
-        <Price isPaid={isPaid}>
+        <Price $isPaid={isPaid}>
           <DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
             {formatCurrency(totalPrice)}
 

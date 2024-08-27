@@ -8,6 +8,13 @@ import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
 import { Booking } from "../../types/ResponseTypes";
 import { statusProps } from "../../types/ComponentsTypes";
+import Menus from "../../context/Menu";
+import {
+  HiArrowDownOnSquare,
+  HiEllipsisVertical,
+  HiEye,
+} from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -37,8 +44,9 @@ const Amount = styled.div`
 `;
 
 function BookingRow({ booking }: { booking: Booking }) {
+  const navigate = useNavigate();
   const {
-    id: _bookingId,
+    id: bookingId,
     startDate,
     endDate,
     numNights,
@@ -86,6 +94,35 @@ function BookingRow({ booking }: { booking: Booking }) {
       </Tag>
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
+
+      <Menus>
+        <Menus.Toggle Btn={<HiEllipsisVertical />} id={`${bookingId}`}>
+          <Menus.List id={`${bookingId}`}>
+            <Menus.Button
+              icon={<HiEye />}
+              onClick={() =>
+                navigate(`/bookings/Details/${cabinName}`, {
+                  state: { bookingId },
+                })
+              }
+            >
+              See Details
+            </Menus.Button>
+            {status === "unconfirmed" && (
+              <Menus.Button
+                icon={<HiArrowDownOnSquare />}
+                onClick={() =>
+                  navigate(`/bookings/checkin/${cabinName}`, {
+                    state: { bookingId },
+                  })
+                }
+              >
+                Check in
+              </Menus.Button>
+            )}
+          </Menus.List>
+        </Menus.Toggle>
+      </Menus>
     </Table.Row>
   );
 }

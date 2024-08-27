@@ -9,14 +9,12 @@ import Menu from "../../context/Menu";
 
 const CabinTable = () => {
   const [searchParams] = useSearchParams();
-  const {
-    data: cabins = [],
-    isPending,
-    error,
-  } = ApiGetResponse({
+  const { data, isPending, error } = ApiGetResponse({
     queryKey: ["cabins"],
     queryFn: getCabins,
   });
+
+  const cabins = data ?? [];
 
   if (isPending) return <Spinner />;
   if (error) return <div>Error: {error.message}</div>;
@@ -32,10 +30,12 @@ const CabinTable = () => {
       : cabin;
   });
 
-  console.log(query);
   const [filed, diraction] = sortBy.split("-");
   const modifire = diraction === "asc" ? 1 : -1;
-  filteredCabins.sort((a, b) => (a[filed] - b[filed]) * modifire);
+  filteredCabins.sort(
+    (a: { [x: string]: number }, b: { [x: string]: number }) =>
+      (a[filed] - b[filed]) * modifire
+  );
 
   return (
     <Menu>

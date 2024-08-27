@@ -9,10 +9,8 @@ import Button from "./Button";
 import Uploader from "../data/Uploader";
 
 const NavList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
 `;
 const Link = styled(NavLink)`
   &:link,
@@ -58,7 +56,6 @@ const Div = styled.div`
   gap: 0.8rem;
 `;
 const BtnDiv = styled.div`
-  width: 100%;
   padding-right: 3.6rem;
 `;
 export default function MainNav() {
@@ -74,7 +71,10 @@ export default function MainNav() {
           </Link>
         ))}
       </Div>
-      {pathname.startsWith("/cabins") && (
+      <BtnDiv>
+        <Uploader />
+
+        {/* {pathname.startsWith("/cabins") && (
         <Meta title="Add Cabin">
           <Menus>
             <Modal>
@@ -89,8 +89,8 @@ export default function MainNav() {
             </Modal>
           </Menus>
         </Meta>
-      )}
-      <Uploader />
+      )} */}
+      </BtnDiv>
     </NavList>
   );
 }

@@ -10,7 +10,7 @@ export const ApiGetResponse = ({ queryKey, queryFn }: ApiResponseProps) => {
   });
 
   return {
-    data: (data as any)?.data,
+    data: (data as any)?.data ?? data,
     count: (data as any)?.count,
     isPending,
     error,
@@ -33,10 +33,14 @@ export const IUDApiResponse = <T>({
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [queryKey],
+        queryKey: [queryKey].flat(),
       });
+      console.log(status);
       reset();
       onCloseModal?.();
+    },
+    onError: (err) => {
+      console.log(err);
     },
   });
 

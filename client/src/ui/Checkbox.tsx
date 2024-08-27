@@ -7,7 +7,6 @@ const StyledCheckbox = styled.div`
   & input[type="checkbox"] {
     height: 2.4rem;
     width: 2.4rem;
-    outline-offset: 2px;
     transform-origin: 0;
     accent-color: var(--color-brand-600);
   }
@@ -25,7 +24,21 @@ const StyledCheckbox = styled.div`
   }
 `;
 
-function Checkbox({ checked, onChange, disabled = false, id, children }) {
+interface CheckboxProps {
+  checked: boolean;
+  onChange: () => void;
+  disabled?: boolean;
+  id: string;
+  children: React.ReactNode;
+}
+
+function Checkbox({
+  checked,
+  onChange,
+  disabled = false,
+  id,
+  children,
+}: CheckboxProps) {
   return (
     <StyledCheckbox>
       <input

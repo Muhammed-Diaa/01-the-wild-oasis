@@ -70,6 +70,8 @@ const StyledList = styled.ul<{ width?: "toggle" | "sort" }>`
   border-radius: var(--border-radius-md);
 `;
 const StyledButton = styled.li`
+  display: flex;
+  align-items: center;
   width: 100%;
   text-align: left;
   background: none;

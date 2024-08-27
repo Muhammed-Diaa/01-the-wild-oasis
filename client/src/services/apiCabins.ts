@@ -4,10 +4,12 @@ import supabase from "./supabase";
 const URL = import.meta.env.VITE_SUPABASE_URL;
 
 export const getCabins = async () => {
-  const { data, error } = await supabase.from("cabins").select("*");
-  if (error) throw new Error("Cabins could not be loaded");
+  const { data, error, count } = await supabase
+    .from("cabins")
+    .select("*", { count: "exact" });
 
-  return data;
+  if (error) throw new Error("Cabins could not be loaded");
+  return { data, count };
 };
 export const insertAndEditCabin = async ({ id, Data }: Cabins) => {
   const isImageString = typeof Data.image === "string";
