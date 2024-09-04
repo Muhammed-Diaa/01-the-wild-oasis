@@ -11,7 +11,7 @@ import Menus from "../../context/Menu";
 import CreateAndEditCabin from "./CreateAndEditCabin";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 
-import { insertAndEditCabin } from "../../services/apiCabins";
+import { deleteCabin, insertAndEditCabin } from "../../services/apiCabins";
 import { IUDApiResponse } from "../../utils/ApiResponses";
 import { CabinResponse } from "../../types/ResponseTypes";
 import { formatCurrency } from "../../utils/helpers";
@@ -59,6 +59,11 @@ const CabinRow = ({ Data }: { Data: CabinResponse }) => {
     queryKey: "cabins",
     FN: insertAndEditCabin,
     FunctionName: "Duplicating",
+  });
+  const { mutate: Deleting, isPending } = IUDApiResponse({
+    queryKey: "cabins",
+    FN: deleteCabin,
+    FunctionName: "Deleting",
   });
   const onDuplicate = async () => {
     const { data: existingCabins } = await supabase
@@ -111,7 +116,12 @@ const CabinRow = ({ Data }: { Data: CabinResponse }) => {
             <CreateAndEditCabin editCabins={Data} />
           </Modal.Window>
           <Modal.Window name="delete">
-            <ConfirmDelete id={Data.id ?? 0} />
+            <ConfirmDelete
+              type="Cabin"
+              mutate={Deleting}
+              isPending={isPending}
+              id={Data.id ?? 0}
+            />
           </Modal.Window>
         </Menus>
       </Modal>

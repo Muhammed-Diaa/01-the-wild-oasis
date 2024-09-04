@@ -9,12 +9,19 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
-import { ApiGetResponse } from "../../utils/ApiResponses";
-import { getBookingByID } from "../../services/apiBookings";
+import { ApiGetResponse, IUDApiResponse } from "../../utils/ApiResponses";
+import {
+  deleteBooking,
+  getBookingByID,
+  updateBooking,
+} from "../../services/apiBookings";
 import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../../ui/Spinner";
 import { Booking } from "../../types/ResponseTypes";
 import Meta from "../../utils/Meta";
+import Modal from "../../context/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import PageNotFound from "../../pages/PageNotFound";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -24,24 +31,36 @@ const HeadingGroup = styled.div`
 
 function BookingDetail() {
   const location = useLocation();
-  const { bookingId } = location.state || {};
+  const moveBack = useMoveBack();
+  const { bookingId } = location.state ?? 22;
   const navigate = useNavigate();
   const { data, isPending } = ApiGetResponse({
-    queryKey: ["booking", bookingId],
+    queryKey: ["booking", `${bookingId}`],
     queryFn: () => getBookingByID(Number(bookingId)),
   });
-
+  const { mutate: Deleting, isPending: DeleteProssing } = IUDApiResponse({
+    queryKey: "bookings",
+    FN: deleteBooking,
+    FunctionName: "Deleting",
+    onSuccess: moveBack,
+  });
+  const { mutate } = IUDApiResponse({
+    queryKey: ["booking", `${bookingId}`],
+    FN: updateBooking,
+    FunctionName: `Checking out ${bookingId}`,
+  });
   const booking = data as Booking;
   const status = booking?.status as keyof typeof statusToTagName;
-  const moveBack = useMoveBack();
-  if (!data || isPending) return <Spinner />;
-  console.log("data", booking);
+
+  if (isPending) return <Spinner />;
+  if (!data) return <PageNotFound />;
 
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
     "checked-out": "silver",
   };
+
   return (
     <Meta title={`Details ${booking.cabins.name}`}>
       <Row type="row">
@@ -57,6 +76,20 @@ function BookingDetail() {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
+        <Modal>
+          <Modal.Open opens="delete">
+            <Button $variation="danger">Delete Booking</Button>
+          </Modal.Open>
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              type={"booking"}
+              id={bookingId}
+              mutate={Deleting}
+              isPending={DeleteProssing}
+            />
+          </Modal.Window>
+        </Modal>
+
         {status === "unconfirmed" && (
           <Button
             onClick={() =>
@@ -66,6 +99,16 @@ function BookingDetail() {
             }
           >
             Check in
+          </Button>
+        )}
+        {status === "checked-in" && (
+          <Button
+            onClick={() => {
+              navigate("/dashboard");
+              mutate({ id: bookingId, checked: { status: "checked-out" } });
+            }}
+          >
+            Check out
           </Button>
         )}
         <Button $variation="secondary" onClick={moveBack}>

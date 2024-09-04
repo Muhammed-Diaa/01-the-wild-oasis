@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import SpinnerMini from "../../ui/SpinnerMini";
+
 const StyledStat = styled.div`
   /* Box */
   background-color: var(--color-grey-0);
@@ -47,12 +49,22 @@ const Value = styled.p`
   font-weight: 500;
 `;
 
-function Stat({ icon, title, value, color }) {
+function Stat({
+  icon,
+  title,
+  value,
+  color,
+}: {
+  icon: JSX.Element;
+  title: string;
+  value: number | string;
+  color: string;
+}) {
   return (
     <StyledStat>
       <Icon color={color}>{icon}</Icon>
       <Title>{title}</Title>
-      <Value>{value}</Value>
+      {!value ? <SpinnerMini /> : <Value>{value}</Value>}
     </StyledStat>
   );
 }

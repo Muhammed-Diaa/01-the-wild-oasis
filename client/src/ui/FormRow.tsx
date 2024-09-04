@@ -4,8 +4,8 @@ export const StyledRow = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 24rem 1fr 1.2fr;
-  gap: 2.4rem;
-  width: 100%;
+  gap: 3.6rem;
+
   padding: 1.2rem 0;
 
   &:first-child {

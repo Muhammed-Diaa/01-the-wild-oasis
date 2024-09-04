@@ -48,7 +48,18 @@ export interface IUDApiResponseProps<T> {
   queryKey: string | string[];
   FN: (data: T) => Promise<unknown>;
   reset?: () => void;
-  onCloseModal?: () => void;
+
+  onSuccess?: () => void;
+  onError?: () => void;
+}
+export interface UserAuth<T> {
+  FN: (data: T) => Promise<unknown>;
+  loading: string;
+  success: string;
+  error: string;
+
+  onSuccess?: () => void;
+  onError?: () => void;
 }
 export interface MutationResult {
   mutate: (data: Cabins) => void;

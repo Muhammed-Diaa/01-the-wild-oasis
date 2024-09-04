@@ -43,7 +43,7 @@ function BookingTable() {
       }),
   });
   const bookings = data as unknown as Booking[];
-  if (isPending) return <Spinner />;
+
   if (!bookings) return null;
 
   return (
@@ -58,13 +58,17 @@ function BookingTable() {
           <div></div>
         </Table.Header>
 
-        <Table.Body
-          data={bookings}
-          render={(data: unknown) => {
-            const booking = data as Booking;
-            return <BookingRow key={booking.id} booking={booking} />;
-          }}
-        />
+        {isPending ? (
+          <Spinner />
+        ) : (
+          <Table.Body
+            data={bookings}
+            render={(data: unknown) => {
+              const booking = data as Booking;
+              return <BookingRow key={booking.id} booking={booking} />;
+            }}
+          />
+        )}
         <Table.Footer>
           <Pagination results={count} />
         </Table.Footer>

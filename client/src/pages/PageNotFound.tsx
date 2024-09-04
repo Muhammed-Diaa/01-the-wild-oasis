@@ -5,7 +5,7 @@ import Heading from "../ui/Heading";
 import Button from "../ui/Button";
 
 const StyledPageNotFound = styled.main`
-  height: 100vh;
+  min-height: 80vh;
   background-color: var(--color-grey-50);
   display: flex;
   align-items: center;
@@ -37,7 +37,7 @@ function PageNotFound() {
         <Heading as="h1">
           The page you are looking for could not be found 😢
         </Heading>
-        <Button onClick={moveBack} size="large">
+        <Button onClick={moveBack} $size="large">
           &larr; Go back
         </Button>
       </Box>

@@ -28,7 +28,6 @@ function CreateAndEditCabin({ editCabins, onCloseModal }: ICFN) {
   const [price, setprice] = useState(0);
   const [discount, setDiscount] = useState(0);
   const TotalPrice = price - discount;
-  console.log(TotalPrice);
   const isEditSession = Boolean(editID);
   const {
     register,
@@ -52,7 +51,7 @@ function CreateAndEditCabin({ editCabins, onCloseModal }: ICFN) {
         FN: insertAndEditCabin,
         reset: reset,
         FunctionName: key,
-        onCloseModal,
+        onSuccess: onCloseModal,
       });
       acc[key] = { mutate, isPending, status };
       return acc;

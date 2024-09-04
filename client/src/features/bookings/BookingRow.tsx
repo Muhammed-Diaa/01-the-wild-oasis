@@ -11,10 +11,17 @@ import { statusProps } from "../../types/ComponentsTypes";
 import Menus from "../../context/Menu";
 import {
   HiArrowDownOnSquare,
+  HiArrowUpOnSquare,
   HiEllipsisVertical,
   HiEye,
+  HiTrash,
 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
+import { IUDApiResponse } from "../../utils/ApiResponses";
+import { deleteBooking, updateBooking } from "../../services/apiBookings";
+import Modal from "../../context/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import { deleteCabin } from "../../services/apiCabins";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -55,6 +62,12 @@ function BookingRow({ booking }: { booking: Booking }) {
     guests: { fullName, email },
     cabins: { name: cabinName },
   } = booking;
+
+  const { mutate: Deleting, isPending } = IUDApiResponse({
+    queryKey: "bookings",
+    FN: deleteBooking,
+    FunctionName: "Deleting",
+  });
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
@@ -75,10 +88,10 @@ function BookingRow({ booking }: { booking: Booking }) {
           {isToday(new Date(startDate))
             ? "Today"
             : formatDistanceFromNow(startDate)}{" "}
-          &rarr; {numNights} night stay
+          → {numNights} night stay
         </span>
         <span>
-          {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
+          {format(new Date(startDate), "MMM dd yyyy")} —{" "}
           {format(new Date(endDate), "MMM dd yyyy")}
         </span>
       </Stacked>
@@ -94,37 +107,61 @@ function BookingRow({ booking }: { booking: Booking }) {
       </Tag>
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
-
-      <Menus>
-        <Menus.Toggle Btn={<HiEllipsisVertical />} id={`${bookingId}`}>
-          <Menus.List id={`${bookingId}`}>
-            <Menus.Button
-              icon={<HiEye />}
-              onClick={() =>
-                navigate(`/bookings/Details/${cabinName}`, {
-                  state: { bookingId },
-                })
-              }
-            >
-              See Details
-            </Menus.Button>
-            {status === "unconfirmed" && (
+      <Modal>
+        <Menus>
+          <Menus.Toggle Btn={<HiEllipsisVertical />} id={bookingId.toString()}>
+            <Menus.List id={bookingId.toString()}>
               <Menus.Button
-                icon={<HiArrowDownOnSquare />}
+                icon={<HiEye />}
                 onClick={() =>
-                  navigate(`/bookings/checkin/${cabinName}`, {
+                  navigate(`/bookings/Details/${cabinName}`, {
                     state: { bookingId },
                   })
                 }
               >
-                Check in
+                See Details
               </Menus.Button>
-            )}
-          </Menus.List>
-        </Menus.Toggle>
-      </Menus>
+              {status === "unconfirmed" && (
+                <Menus.Button
+                  icon={<HiArrowDownOnSquare />}
+                  onClick={() =>
+                    navigate(`/bookings/checkin/${cabinName}`, {
+                      state: { bookingId },
+                    })
+                  }
+                >
+                  Check in
+                </Menus.Button>
+              )}
+              {status === "checked-in" && (
+                <Menus.Button
+                  icon={<HiArrowUpOnSquare />}
+                  onClick={() =>
+                    navigate(`/bookings/Details/${cabinName}`, {
+                      state: { bookingId },
+                    })
+                  }
+                >
+                  Check out
+                </Menus.Button>
+              )}
+              <Modal.Open opens="delete">
+                <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+              </Modal.Open>
+            </Menus.List>
+          </Menus.Toggle>
+
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              type="Booking"
+              mutate={Deleting}
+              isPending={isPending}
+              id={bookingId}
+            />
+          </Modal.Window>
+        </Menus>
+      </Modal>
     </Table.Row>
   );
 }
-
 export default BookingRow;

@@ -9,7 +9,7 @@ function Bookings() {
     <Meta title="Bookings">
       <Row type="row">
         <Heading as="h1">All bookings</Heading>
-        <Filter FilterOPtions="status">
+        <Filter FilterOPtions="status" defaultFilter="All">
           <Filter.Button value="All" />
           <Filter.Button value="Checked In" />
           <Filter.Button value="checked out" />

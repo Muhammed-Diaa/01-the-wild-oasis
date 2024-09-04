@@ -68,10 +68,9 @@ export async function getBookingsAfterDate(date: unknown) {
 }
 
 // Returns all STAYS that are were created after the given date
-export async function getStaysAfterDate(date: unknown) {
+export async function getStaysAfterDate(date: string) {
   const { data, error } = await supabase
     .from("bookings")
-    // .select('*')
     .select("*, guests(fullName)")
     .gte("startDate", date)
     .lte("startDate", getToday());
@@ -88,7 +87,7 @@ export async function getStaysAfterDate(date: unknown) {
 export async function getStaysTodayActivity() {
   const { data, error } = await supabase
     .from("bookings")
-    .select("*, guests(fullName, nationality, countryFlag)")
+    .select("*, guests(fullName, nationality, countryFlag),cabins(name)")
     .or(
       `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
     )
@@ -105,10 +104,17 @@ export async function getStaysTodayActivity() {
   return data;
 }
 
-export async function updateBooking(id: number, obj: { status: string }) {
+export async function updateBooking({
+  id,
+  checked,
+}: {
+  id: number;
+  checked: object;
+}) {
+  console.log(id, checked);
   const { data, error } = await supabase
     .from("bookings")
-    .update(obj)
+    .update({ ...checked })
     .eq("id", id)
     .select()
     .single();

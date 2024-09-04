@@ -3,7 +3,6 @@ import {
   HiOutlineCog6Tooth,
   HiOutlineHome,
   HiOutlineHomeModern,
-  HiOutlineUsers,
 } from "react-icons/hi2";
 
 export const NavBtnList = [
@@ -22,11 +21,7 @@ export const NavBtnList = [
     path: "/cabins",
     icon: HiOutlineHomeModern,
   },
-  {
-    name: "user",
-    path: "/user",
-    icon: HiOutlineUsers,
-  },
+
   {
     name: "Settings",
     path: "/settings",

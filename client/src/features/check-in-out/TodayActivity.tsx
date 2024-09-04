@@ -2,6 +2,11 @@ import styled from "styled-components";
 
 import Heading from "../../ui/Heading";
 import Row from "../../ui/Row";
+import { ApiGetResponse } from "../../utils/ApiResponses";
+import { getStaysTodayActivity } from "../../services/apiBookings";
+import Loader from "../../ui/Loader";
+import TodayItem from "./TodayItem";
+import { Booking } from "../../types/ResponseTypes";
 
 const StyledToday = styled.div`
   /* Box */
@@ -37,11 +42,30 @@ const NoActivity = styled.p`
 `;
 
 function Today() {
+  const { data: stays, isPending } = ApiGetResponse({
+    queryKey: ["todaay-activity"],
+    queryFn: getStaysTodayActivity,
+  });
+
   return (
     <StyledToday>
-      <Row type="horizontal">
+      <Row type="row">
         <Heading as="h2">Today</Heading>
       </Row>
+
+      {!isPending ? (
+        stays?.length > 0 ? (
+          <TodayList>
+            {stays.map((stay: Booking) => (
+              <TodayItem stay={stay} />
+            ))}
+          </TodayList>
+        ) : (
+          <NoActivity>No Activity Today...</NoActivity>
+        )
+      ) : (
+        <Loader />
+      )}
     </StyledToday>
   );
 }

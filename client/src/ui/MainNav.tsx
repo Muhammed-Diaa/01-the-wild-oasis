@@ -6,7 +6,7 @@ import Meta from "../utils/Meta";
 import Menus from "../context/Menu";
 import Modal from "../context/Modal";
 import Button from "./Button";
-import Uploader from "../data/Uploader";
+// import Uploader from "../data/Uploader";
 
 const NavList = styled.ul`
   display: grid;
@@ -72,24 +72,24 @@ export default function MainNav() {
         ))}
       </Div>
       <BtnDiv>
-        <Uploader />
+        {/* <Uploader /> */}
 
-        {/* {pathname.startsWith("/cabins") && (
-        <Meta title="Add Cabin">
-          <Menus>
-            <Modal>
-              <BtnDiv>
-                <Modal.Open opens={"create"}>
-                  <Button $width="full">Add Cabin</Button>
-                </Modal.Open>
-              </BtnDiv>
-              <Modal.Window name={"create"}>
-                <CreateAndEditCabin />
-              </Modal.Window>
-            </Modal>
-          </Menus>
-        </Meta>
-      )} */}
+        {pathname.startsWith("/cabins") && (
+          <Meta title="Add Cabin">
+            <Menus>
+              <Modal>
+                <BtnDiv>
+                  <Modal.Open opens={"create"}>
+                    <Button $width="full">Add Cabin</Button>
+                  </Modal.Open>
+                </BtnDiv>
+                <Modal.Window name={"create"}>
+                  <CreateAndEditCabin />
+                </Modal.Window>
+              </Modal>
+            </Menus>
+          </Meta>
+        )}
       </BtnDiv>
     </NavList>
   );

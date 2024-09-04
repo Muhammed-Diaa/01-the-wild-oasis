@@ -1,5 +1,17 @@
 import styled from "styled-components";
 import DashboardBox from "./DashboardBox";
+import { Booking } from "../../types/ResponseTypes";
+import {
+  ResponsiveContainer,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  AreaChart,
+} from "recharts";
+import Heading from "../../ui/Heading";
+import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
 
 const StyledSalesChart = styled(DashboardBox)`
   grid-column: 1 / -1;
@@ -10,38 +22,6 @@ const StyledSalesChart = styled(DashboardBox)`
     stroke: var(--color-grey-300);
   }
 `;
-
-const fakeData = [
-  { label: "Jan 09", totalSales: 480, extrasSales: 20 },
-  { label: "Jan 10", totalSales: 580, extrasSales: 100 },
-  { label: "Jan 11", totalSales: 550, extrasSales: 150 },
-  { label: "Jan 12", totalSales: 600, extrasSales: 50 },
-  { label: "Jan 13", totalSales: 700, extrasSales: 150 },
-  { label: "Jan 14", totalSales: 800, extrasSales: 150 },
-  { label: "Jan 15", totalSales: 700, extrasSales: 200 },
-  { label: "Jan 16", totalSales: 650, extrasSales: 200 },
-  { label: "Jan 17", totalSales: 600, extrasSales: 300 },
-  { label: "Jan 18", totalSales: 550, extrasSales: 100 },
-  { label: "Jan 19", totalSales: 700, extrasSales: 100 },
-  { label: "Jan 20", totalSales: 800, extrasSales: 200 },
-  { label: "Jan 21", totalSales: 700, extrasSales: 100 },
-  { label: "Jan 22", totalSales: 810, extrasSales: 50 },
-  { label: "Jan 23", totalSales: 950, extrasSales: 250 },
-  { label: "Jan 24", totalSales: 970, extrasSales: 100 },
-  { label: "Jan 25", totalSales: 900, extrasSales: 200 },
-  { label: "Jan 26", totalSales: 950, extrasSales: 300 },
-  { label: "Jan 27", totalSales: 850, extrasSales: 200 },
-  { label: "Jan 28", totalSales: 900, extrasSales: 100 },
-  { label: "Jan 29", totalSales: 800, extrasSales: 300 },
-  { label: "Jan 30", totalSales: 950, extrasSales: 200 },
-  { label: "Jan 31", totalSales: 1100, extrasSales: 300 },
-  { label: "Feb 01", totalSales: 1200, extrasSales: 400 },
-  { label: "Feb 02", totalSales: 1250, extrasSales: 300 },
-  { label: "Feb 03", totalSales: 1400, extrasSales: 450 },
-  { label: "Feb 04", totalSales: 1500, extrasSales: 500 },
-  { label: "Feb 05", totalSales: 1400, extrasSales: 600 },
-  { label: "Feb 06", totalSales: 1450, extrasSales: 400 },
-];
 
 const isDarkMode = true;
 const colors = isDarkMode
@@ -57,3 +37,77 @@ const colors = isDarkMode
       text: "#374151",
       background: "#fff",
     };
+
+const SalesChart = ({
+  data = [],
+  status = 7,
+}: {
+  data?: Booking[];
+  status?: number;
+}) => {
+  const allDate = eachDayOfInterval({
+    start: subDays(new Date(), status - 1),
+    end: new Date(),
+  });
+
+  const Data = allDate.map((date) => {
+    return {
+      label: format(date, "MMM dd"),
+      totalSales: data
+        .filter((booking) => isSameDay(date, new Date(booking.created_at)))
+        .reduce((acc, cur) => acc + cur.totalPrice, 0),
+      extrasSales: data
+        .filter((booking) => isSameDay(date, new Date(booking.created_at)))
+        .reduce((acc, cur) => acc + cur.extrasPrice, 0),
+    };
+  });
+
+  return (
+    <StyledSalesChart>
+      <Heading as="h2">
+        Sales from {format(allDate[0], "MMM dd yyyy")} —{" "}
+        {format(allDate[allDate.length - 1], "MMM dd yyyy")}{" "}
+      </Heading>
+      <ResponsiveContainer width="100%" height={300}>
+        <AreaChart data={Data}>
+          <XAxis dataKey={"label"} />
+          <YAxis unit={"$"} />
+          <CartesianGrid strokeDasharray="4" stroke={colors.background} />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: colors.background,
+              color: colors.text,
+            }}
+          />
+          <Area
+            dataKey={"totalSales"}
+            type="monotone"
+            stroke={colors.totalSales.stroke}
+            fill={colors.totalSales.fill}
+            strokeWidth={2}
+            name="Total sales"
+            unit="$"
+            dot={{ r: 1, fill: "white" }}
+            yAxisId={0}
+            xAxisId={0}
+            activeDot={{ r: 8, fill: colors.totalSales.stroke }}
+          />
+          <Area
+            dataKey={"extrasSales"}
+            type="monotone"
+            stroke={colors.extrasSales.stroke}
+            fill={colors.extrasSales.fill}
+            strokeWidth={2}
+            name="Extra sales"
+            unit="$"
+            dot={{ r: 1, fill: "white" }}
+            yAxisId={0}
+            xAxisId={0}
+            activeDot={{ r: 8, fill: colors.extrasSales.stroke }}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </StyledSalesChart>
+  );
+};
+export default SalesChart;

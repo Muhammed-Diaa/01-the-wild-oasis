@@ -9,6 +9,7 @@ import Button from "../../ui/Button";
 
 function UpdateSettingsForm() {
   const { register, handleSubmit } = useForm<Settings>();
+
   const { data: setting } = ApiGetResponse({
     queryKey: "settings",
     queryFn: getSettings,
@@ -18,8 +19,8 @@ function UpdateSettingsForm() {
     FN: updateSetting,
     FunctionName: "Updating settings",
   });
+
   const onSubmit = (data: Settings) => {
-    console.log(data);
     mutate(data);
   };
 
@@ -79,5 +80,4 @@ function UpdateSettingsForm() {
     </FormData>
   );
 }
-
 export default UpdateSettingsForm;

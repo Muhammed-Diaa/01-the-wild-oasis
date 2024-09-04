@@ -1,12 +1,41 @@
 import { Cabins } from "../types/ResponseTypes";
+import { PAGE_SIZE } from "../utils/constants";
 import supabase from "./supabase";
 
 const URL = import.meta.env.VITE_SUPABASE_URL;
 
-export const getCabins = async () => {
-  const { data, error, count } = await supabase
-    .from("cabins")
-    .select("*", { count: "exact" });
+export const getCabins = async ({
+  page,
+  filter,
+  sortBy,
+}: {
+  page?: number;
+  filter?: { field: string; value: string };
+  sortBy?: { field: string; diraction: string };
+}) => {
+  let query = supabase.from("cabins").select("*", { count: "exact" });
+  console.log("filter", filter);
+  if (filter && filter !== null) {
+    if (filter.value === "with-discount") {
+      query = query.or("discount.gt.0");
+    }
+    if (filter.value === "no-discount") {
+      query = query.or("discount.eq.0");
+    }
+  }
+
+  if (sortBy && sortBy !== null)
+    query = query.order(sortBy.field, {
+      ascending: sortBy.diraction === "asc",
+    });
+  if (page) {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = page * PAGE_SIZE - 1;
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
+  console.log(data);
 
   if (error) throw new Error("Cabins could not be loaded");
   return { data, count };

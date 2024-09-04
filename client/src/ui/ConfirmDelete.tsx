@@ -1,12 +1,5 @@
-// import styled from "styled-components";
-
 import Heading from "./Heading";
-// import { ConfirmDeleteProps } from "../types/ResponseTypes";
-// import TapLayoutOverAll from "./TapLayoutOverAll"
-
 import styled from "styled-components";
-import { IUDApiResponse } from "../utils/ApiResponses";
-import { deleteCabin } from "../services/apiCabins";
 import Meta from "../utils/Meta";
 import { StyledRow } from "./FormRow";
 import Button from "./Button";
@@ -16,7 +9,8 @@ const StyledConfirmDelete = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: start;
+  text-align: center;
+
   gap: 1.2rem;
   & p {
     color: var(--color-grey-500);
@@ -30,28 +24,29 @@ const StyledConfirmDelete = styled.div`
 `;
 
 function ConfirmDelete({
+  type,
   id,
   onCloseModal,
+  mutate,
+  isPending,
 }: {
+  type: string;
   id: number;
   onCloseModal?: () => void;
+  mutate: (id: number) => void;
+  isPending: boolean;
 }) {
-  const { mutate, isPending } = IUDApiResponse({
-    queryKey: "cabins",
-    FN: deleteCabin,
-    FunctionName: "Deleting",
-  });
   const onDelete = () => {
     mutate(id);
   };
   // const state = status === "success";
   return (
-    <Meta title="Delete Cabin">
+    <Meta title={`Delete ${type}`}>
       <StyledConfirmDelete>
-        <Heading as="h3">Delete {"we"}</Heading>
+        <Heading as="h3">Delete {id}</Heading>
         <p>
-          Are you sure you want to delete this {"we"} permanently? This action
-          cannot be undone.
+          Are you sure you want to delete this {type} with ({id}) permanently?
+          This action cannot be undone.
         </p>
       </StyledConfirmDelete>
       <StyledRow>

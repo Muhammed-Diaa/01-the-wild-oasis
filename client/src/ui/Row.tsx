@@ -15,5 +15,6 @@ const rowType = {
 const Row = styled.div<RowFace>`
   display: flex;
   ${({ type }) => rowType[type || "column"]}
+  padding: 2.4rem 4rem;
 `;
 export default Row;

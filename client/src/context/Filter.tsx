@@ -69,12 +69,14 @@ const useFilter = () => {
 const Filter = ({
   children,
   FilterOPtions,
-}: Children & { FilterOPtions: string }) => {
+  defaultFilter,
+}: Children & { FilterOPtions: string; defaultFilter: string }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const filter = searchParams.get(FilterOPtions) || "all";
+  const filter = searchParams.get(FilterOPtions) || defaultFilter;
   const sort = searchParams.get("sortBy") || "startDate-desc";
   const setFilter = (filter: string) => {
     searchParams.set(FilterOPtions, filter);
+    searchParams.set("page", "1");
     setSearchParams(searchParams);
   };
   const setSort = (sort: string) => {
