@@ -29,8 +29,8 @@ const EyeIcon = styled.button`
 
 const SignInForm = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("user@example.com");
-  const [password, setPassword] = useState("acer.net2");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [seePassword, setSeePassword] = useState(false);
 
   const { mutate: login, isPending } = UserAuth({

@@ -42,8 +42,8 @@ const SignUpForm = () => {
   const [inputs, setInputs] = useState({
     name: "",
     email: "",
-    password: "acer.net2",
-    passwordConfirm: "acer.net2",
+    password: "",
+    passwordConfirm: "",
   });
 
   const { name, email, password, passwordConfirm } = inputs;
