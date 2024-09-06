@@ -130,7 +130,7 @@ const OtpVerification = ({ email: initialEmail }: { email: string }) => {
 
       toast.success("OTP resent successfully!");
       setCounter(60);
-    } catch (error: any) {
+    } catch (error: { message: string }) {
       toast.error(error.message);
     } finally {
       setIsResending(false);

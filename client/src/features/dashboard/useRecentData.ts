@@ -36,7 +36,8 @@ export const useRecentStaysData = () => {
   });
 
   const confirmedStays = stays?.filter(
-    (stay: any) => stay.status === "checked-in" || stay.status === "checked-out"
+    (stay: Booking) =>
+      stay.status === "checked-in" || stay.status === "checked-out"
   );
 
   return { confirmedStays, status };

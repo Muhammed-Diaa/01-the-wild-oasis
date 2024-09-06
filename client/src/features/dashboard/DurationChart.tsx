@@ -73,32 +73,40 @@ const startDataLight = [
 
 const PrepareData = (
   startData: { duration: string; value: number; color: string }[],
-  stays: any[]
+  stays: {
+    numNights: number;
+  }[]
 ) => {
   // A bit ugly code, but sometimes this is what it takes when working with real data 😅
 
   const incArrayValue = (
-    arr: { duration: any; value: number }[],
+    arr: { duration: string; value: number }[],
     field: string
   ) => {
-    return arr.map((obj: { duration: any; value: number }) =>
+    return arr.map((obj: { duration: string; value: number }) =>
       obj.duration === field ? { ...obj, value: obj.value + 1 } : obj
     );
   };
 
   const data = stays
-    ?.reduce((arr: any, cur: { numNights: any }) => {
-      const num = cur.numNights;
-      if (num === 1) return incArrayValue(arr, "1 night");
-      if (num === 2) return incArrayValue(arr, "2 nights");
-      if (num === 3) return incArrayValue(arr, "3 nights");
-      if ([4, 5].includes(num)) return incArrayValue(arr, "4-5 nights");
-      if ([6, 7].includes(num)) return incArrayValue(arr, "6-7 nights");
-      if (num >= 8 && num <= 14) return incArrayValue(arr, "8-14 nights");
-      if (num >= 15 && num <= 21) return incArrayValue(arr, "15-21 nights");
-      if (num >= 21) return incArrayValue(arr, "21+ nights");
-      return arr;
-    }, startData)
+    ?.reduce(
+      (
+        arr: { duration: string; value: number }[],
+        cur: { numNights: number }
+      ) => {
+        const num = cur.numNights;
+        if (num === 1) return incArrayValue(arr, "1 night");
+        if (num === 2) return incArrayValue(arr, "2 nights");
+        if (num === 3) return incArrayValue(arr, "3 nights");
+        if ([4, 5].includes(num)) return incArrayValue(arr, "4-5 nights");
+        if ([6, 7].includes(num)) return incArrayValue(arr, "6-7 nights");
+        if (num >= 8 && num <= 14) return incArrayValue(arr, "8-14 nights");
+        if (num >= 15 && num <= 21) return incArrayValue(arr, "15-21 nights");
+        if (num >= 21) return incArrayValue(arr, "21+ nights");
+        return arr;
+      },
+      startData
+    )
     .filter((obj: { value: number }) => obj.value > 0);
 
   return data;
