@@ -14,7 +14,7 @@ export const getCabins = async ({
   sortBy?: { field: string; diraction: string };
 }) => {
   let query = supabase.from("cabins").select("*", { count: "exact" });
-  console.log("filter", filter);
+
   if (filter && filter !== null) {
     if (filter.value === "with-discount") {
       query = query.or("discount.gt.0");
@@ -35,7 +35,6 @@ export const getCabins = async ({
   }
 
   const { data, error, count } = await query;
-  console.log(data);
 
   if (error) throw new Error("Cabins could not be loaded");
   return { data, count };

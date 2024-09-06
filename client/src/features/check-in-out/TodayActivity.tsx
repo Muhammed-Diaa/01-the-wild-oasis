@@ -56,8 +56,8 @@ function Today() {
       {!isPending ? (
         stays?.length > 0 ? (
           <TodayList>
-            {stays.map((stay: Booking) => (
-              <TodayItem stay={stay} />
+            {stays.map((stay: Booking, i: number) => (
+              <TodayItem key={i} stay={stay} />
             ))}
           </TodayList>
         ) : (

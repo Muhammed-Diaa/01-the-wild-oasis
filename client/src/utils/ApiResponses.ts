@@ -46,7 +46,6 @@ export const IUDApiResponse = <T>({
     },
     onError: (err) => {
       onError?.();
-      console.log(err);
     },
   });
 

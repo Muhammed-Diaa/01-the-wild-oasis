@@ -111,7 +111,6 @@ export async function updateBooking({
   id: number;
   checked: object;
 }) {
-  console.log(id, checked);
   const { data, error } = await supabase
     .from("bookings")
     .update({ ...checked })

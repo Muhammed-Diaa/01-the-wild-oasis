@@ -61,7 +61,7 @@ export const useUpdateUser = async (user: {
 
   if (error) throw new Error(error.message);
   if (!avatar) return data;
-  console.log(avatar);
+
   const fileName = `avatar-${data.user.id}-${Math.random()}`;
   if (avatar instanceof File) {
     const { error: storageError } = await supabase.storage
@@ -72,8 +72,6 @@ export const useUpdateUser = async (user: {
   const newAvatar = await supabase.storage
     .from("avatars")
     .getPublicUrl(fileName).data.publicUrl;
-
-  console.log(avatar);
 
   const { data: updateData, error: updateError } =
     await supabase.auth.updateUser({

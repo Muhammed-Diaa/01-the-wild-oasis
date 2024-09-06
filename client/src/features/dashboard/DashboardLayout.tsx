@@ -16,7 +16,7 @@ const StyledDashboardLayout = styled.div`
 
 const DashboardLayout = () => {
   const { Booking } = useRecentBookingData();
-  const { stays, confirmedStays, status } = useRecentStaysData();
+  const { confirmedStays, status } = useRecentStaysData();
 
   return (
     <StyledDashboardLayout>

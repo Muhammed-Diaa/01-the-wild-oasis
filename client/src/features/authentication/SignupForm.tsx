@@ -78,7 +78,6 @@ const SignUpForm = () => {
       { fullName: name, email: email, password: password },
       {
         onSuccess: (user) => {
-          console.log(user);
           setUser(user as {});
         },
       }

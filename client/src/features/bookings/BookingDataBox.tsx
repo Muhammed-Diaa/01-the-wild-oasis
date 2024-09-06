@@ -119,7 +119,7 @@ function BookingDataBox({ booking }: { booking: Booking }) {
     guests: { fullName: guestName, email, country, countryFlag, nationalID },
     cabins: { name: cabinName },
   } = booking;
-  console.log(isPaid);
+
   return (
     <StyledBookingDataBox>
       <Header>

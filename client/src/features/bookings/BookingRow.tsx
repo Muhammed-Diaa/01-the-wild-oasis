@@ -18,10 +18,9 @@ import {
 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import { IUDApiResponse } from "../../utils/ApiResponses";
-import { deleteBooking, updateBooking } from "../../services/apiBookings";
+import { deleteBooking } from "../../services/apiBookings";
 import Modal from "../../context/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-import { deleteCabin } from "../../services/apiCabins";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
