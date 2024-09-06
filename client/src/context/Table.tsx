@@ -1,6 +1,5 @@
 import { createContext, useContext } from "react";
 import styled from "styled-components";
-import { CabinResponse } from "../types/ResponseTypes";
 import { Children } from "../types/ComponentsTypes";
 
 interface TableProps {
