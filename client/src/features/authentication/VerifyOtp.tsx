@@ -63,7 +63,7 @@ const OtpVerification = ({ email: initialEmail }: { email: string }) => {
   const [email] = useState(initialEmail || "");
   const [counter, setCounter] = useState(60);
   const [isResending, setIsResending] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const navigate = useNavigate();
   const inputRefs = useRef<HTMLInputElement[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
@@ -114,7 +114,6 @@ const OtpVerification = ({ email: initialEmail }: { email: string }) => {
         toast.error("An unknown error occurred");
       }
     }
-    setIsSubmitting(false);
   };
   const handleResendOtp = async () => {
     if (!email) return toast.error("Please enter your email to resend OTP");
@@ -133,7 +132,6 @@ const OtpVerification = ({ email: initialEmail }: { email: string }) => {
     } catch (error: any | { message: string }) {
       toast.error(error.message);
     } finally {
-      setIsResending(false);
     }
   };
   const handleKeyDown = (
@@ -160,7 +158,6 @@ const OtpVerification = ({ email: initialEmail }: { email: string }) => {
     }
     if (newOtp.join("").length === 6 && formRef.current) {
       formRef.current.requestSubmit();
-      setIsSubmitting(true);
     }
   };
 
@@ -187,7 +184,7 @@ const OtpVerification = ({ email: initialEmail }: { email: string }) => {
               type="text"
               id={`otp-${index}`}
               maxLength={1}
-              disabled={isSubmitting}
+              disabled={isResending}
             />
           ))}
         </OTPinput>
