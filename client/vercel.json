@@ -1,5 +1,5 @@
 {
-  "rewrite": [
+  "rewrites": [
     {
       "source": ".(.*)",
       "distination": "./index.html"
